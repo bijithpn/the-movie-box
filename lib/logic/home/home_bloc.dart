@@ -14,8 +14,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomeLoading());
         final mList = await movieRepository.getMovieResults();
         emit(HomeLoaded(mList));
-      } catch (e) {
-        emit(const HomeError("Failed to fetch data. is your device online?"));
+      } catch (error) {
+        emit(HomeError(error.toString()));
       }
     });
   }
