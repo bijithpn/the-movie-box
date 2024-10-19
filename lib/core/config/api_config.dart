@@ -7,4 +7,5 @@ class APIEndPoint {
   static const String discoverMovies = 'discover/movie';
   static const String discoverTV = 'discover/tv';
   static const String movieDetails = 'movie';
+  static const String tvSeriesDetails = 'tv';
 }

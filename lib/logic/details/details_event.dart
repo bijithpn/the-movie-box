@@ -11,3 +11,8 @@ class GetMovieDetails extends DetailsEvent {
   final int moiveId;
   const GetMovieDetails(this.moiveId);
 }
+
+class GetSeriesDetails extends DetailsEvent {
+  final int seriesId;
+  const GetSeriesDetails(this.seriesId);
+}

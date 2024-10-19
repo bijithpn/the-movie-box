@@ -11,12 +11,25 @@ class HomeInitial extends HomeState {}
 
 class HomeLoading extends HomeState {}
 
-class HomeLoaded extends HomeState {
-  final List<MovieResult> movieList;
-  const HomeLoaded(this.movieList);
+class HomeMoviesLoaded extends HomeState {
+  final List<Show> movieList;
+
+  const HomeMoviesLoaded({required this.movieList});
+
+  @override
+  List<Object> get props => [movieList];
+}
+
+class HomeTVSeriesLoaded extends HomeState {
+  final List<Show> tvSeriesList;
+
+  const HomeTVSeriesLoaded({required this.tvSeriesList});
+
+  @override
+  List<Object> get props => [tvSeriesList];
 }
 
 class HomeError extends HomeState {
   final String? message;
-  const HomeError(this.message);
+  const HomeError({required this.message});
 }

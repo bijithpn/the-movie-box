@@ -11,9 +11,14 @@ final class DetailsInitial extends DetailsState {}
 
 final class DetailsLoading extends DetailsState {}
 
-final class DetailsLoaded extends DetailsState {
+final class MovieDetailsLoaded extends DetailsState {
   final MovieDetails movie;
-  const DetailsLoaded({required this.movie});
+  const MovieDetailsLoaded({required this.movie});
+}
+
+final class SeriesDetailsLoaded extends DetailsState {
+  final SeriesDetails series;
+  const SeriesDetailsLoaded({required this.series});
 }
 
 final class DetailsError extends DetailsState {
