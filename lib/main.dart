@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+import 'core/client/api_client.dart';
+import 'view/home/home.dart';
+
+final getIt = GetIt.instance;
+final navigatorKey = GlobalKey<NavigatorState>();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  await GetStorage.init();
+  await initializeClient();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  FlutterError.onError = (FlutterErrorDetails details) {
+    debugPrint('Flutter Error : ${details.exception}');
+    debugPrint('Flutter StackTrace :${details.stack}');
+  };
   runApp(const MyApp());
+}
+
+Future<void> initializeClient() async {
+  final apiClient = ApiClient();
+  getIt.registerSingleton<ApiClient>(apiClient);
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +41,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomeView(),
     );
   }
 }
