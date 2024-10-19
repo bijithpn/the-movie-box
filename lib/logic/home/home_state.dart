@@ -29,6 +29,15 @@ class HomeTVSeriesLoaded extends HomeState {
   List<Object> get props => [tvSeriesList];
 }
 
+class HomeAnimeLoaded extends HomeState {
+  final List<Animes> animeList;
+
+  const HomeAnimeLoaded({required this.animeList});
+
+  @override
+  List<Object> get props => [animeList];
+}
+
 class HomeError extends HomeState {
   final String? message;
   const HomeError({required this.message});

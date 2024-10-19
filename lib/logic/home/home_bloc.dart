@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:the_movie_box/data/model/anime_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
+import 'package:the_movie_box/data/repository/anime_respositroy.dart';
 import 'package:the_movie_box/data/repository/movie_repository.dart';
+import 'package:the_movie_box/data/repository/series_repository.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -9,6 +12,9 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     final MovieRepository movieRepository = MovieRepository();
+    final SeriesRepository seriesRepository = SeriesRepository();
+    final AnimeRespositroy animeRespositroy = AnimeRespositroy();
+
     on<GetMovies>((event, emit) async {
       try {
         emit(HomeLoading());
@@ -33,7 +39,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<GetTVSeries>((event, emit) async {
       try {
-        final tvSeries = await movieRepository.fetchTVSeriesResults();
+        final tvSeries = await seriesRepository.fetchTVSeriesResults();
         emit(HomeTVSeriesLoaded(tvSeriesList: tvSeries));
       } catch (e) {
         emit(const HomeError(message: "Error loading TV series"));
@@ -44,8 +50,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (state is HomeTVSeriesLoaded) {
         try {
           final currentTVSeries = (state as HomeTVSeriesLoaded).tvSeriesList;
-          final newTVSeries =
-              await movieRepository.fetchTVSeriesResults(page: event.pageCount);
+          final newTVSeries = await seriesRepository.fetchTVSeriesResults(
+              page: event.pageCount);
           emit(HomeTVSeriesLoaded(tvSeriesList: currentTVSeries + newTVSeries));
         } catch (e) {
           emit(const HomeError(message: "Error loading more TV series"));
@@ -53,21 +59,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
 
-    // on<GetAnimes>((event, emit) async {
-    //   try {
-    //     final anime = await fetchAnime();
-    //     emit(HomeLoaded(movieList: anime));
-    //   } catch (e) {
-    //     emit(const HomeError(message: "Error loading anime"));
-    //   }
-    // });
+    on<GetAnimes>((event, emit) async {
+      try {
+        final anime = await animeRespositroy.fetchAnime();
+        emit(HomeAnimeLoaded(animeList: anime));
+      } catch (e) {
+        emit(const HomeError(message: "Error loading anime"));
+      }
+    });
 
     // on<GetMoreAnimes>((event, emit) async {
-    //   if (state is HomeLoaded) {
+    //   if (state is HomeAnimeLoaded) {
     //     try {
-    //       final currentAnime = (state as HomeLoaded).movieList;
-    //       final newAnime = await fetchMoreAnime();
-    //       emit(HomeLoaded(movieList: currentAnime + newAnime));
+    //       final currentAnime = (state as HomeAnimeLoaded).animeList;
+    //       final newAnime =
+    //           await animeRespositroy.fetchAnime(page: event.pageCount);
+    //       emit(HomeAnimeLoaded(animeList: currentAnime + newAnime));
     //     } catch (e) {
     //       emit(const HomeError(message: "Error loading more anime"));
     //     }

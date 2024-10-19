@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_movie_box/logic/home/home_bloc.dart';
+import 'package:the_movie_box/view/home/widgets/anime_card_widget.dart';
 import 'package:the_movie_box/view/home/widgets/movie_card_widget.dart';
 
 import 'widgets/series_card_widget.dart';
@@ -85,6 +86,11 @@ class _HomeViewState extends State<HomeView>
         } else if (state is HomeMoviesLoaded) {
           return MovieCardWidget(
             movieList: state.movieList,
+            scrollController: scrollController,
+          );
+        } else if (state is HomeAnimeLoaded) {
+          return AnimeCardWidget(
+            animeList: state.animeList,
             scrollController: scrollController,
           );
         } else if (state is HomeError) {
