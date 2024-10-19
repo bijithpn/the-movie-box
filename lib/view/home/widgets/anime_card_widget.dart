@@ -35,17 +35,24 @@ class AnimeCardWidget extends StatelessWidget {
             //               serieId: anime.id,
             //             )));
           },
-          child: Card(
-            elevation: 4,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  imageUrl: anime.coverImage.large),
-            ),
-          ),
+          child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: const Center(child: CircularProgressIndicator())),
+              imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  )),
+              imageUrl: anime.coverImage.large),
         );
       },
     );
