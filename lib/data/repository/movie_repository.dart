@@ -3,6 +3,7 @@ import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_details.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
+import 'package:the_movie_box/data/model/platform_model.dart';
 import 'package:the_movie_box/main.dart';
 
 class MovieRepository {
@@ -70,14 +71,16 @@ class MovieRepository {
     }
   }
 
-  Future<List<Show>> fetchWhereTOWatchMovie(int movieID) async {
+  Future<List<Buy>> fetchWhereToWatchMovie(int movieID) async {
     try {
-      List<Show> showList = [];
       final res = await apiClient.get(
         APIEndPoint.watchProvidersMovies(movieID),
       );
-      res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
-      return showList;
+      List<Buy> buyers = [];
+      (res.data['results']['CA']?['buy'] ?? [])
+          .map((e) => buyers.add(Buy.fromJson(e)))
+          .toList();
+      return buyers;
     } catch (e) {
       rethrow;
     }

@@ -16,8 +16,10 @@ final class MovieDetailsLoaded extends DetailsState {
   final List<Cast> cast;
   final List<Crew> crew;
   final List<Show> similarMovies;
+  final List<Buy> watchProvider;
   const MovieDetailsLoaded(
       {required this.cast,
+      required this.watchProvider,
       required this.crew,
       required this.similarMovies,
       required this.movie});

@@ -51,11 +51,50 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CachedNetworkImage(
-                          height: 250,
+                          height: 270,
                           fit: BoxFit.cover,
                           placeholder: (_, __) =>
                               const Center(child: CircularProgressIndicator()),
                           imageUrl: APIConfig.imageURL + series.backdropPath,
+                          imageBuilder: (_, imageProvider) => Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                height: 270,
+                                clipBehavior: Clip.none,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover)),
+                              ),
+                              // Gradient overlay for fading effect
+                              Positioned.fill(
+                                child: Container(
+                                  height: 270,
+                                  clipBehavior: Clip.none,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors
+                                            .transparent, // Start with transparent
+                                        Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                            .withOpacity(0.3),
+                                        Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                      ],
+                                      begin: Alignment.center,
+                                      end: Alignment.bottomCenter,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -117,16 +156,22 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                         ),
                                         const SizedBox(height: 7),
                                         Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Text(series.firstAirDate.year
                                                 .toString()),
-                                            const SizedBox(width: 10),
                                             if (series
                                                 .episodeRunTime.isNotEmpty)
-                                              Text(
-                                                  "AVG runtime: ${series.episodeRunTime.first} min"),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                child: Text(
+                                                    "AVG runtime: ${series.episodeRunTime.first} min"),
+                                              ),
                                           ],
                                         ),
                                       ],
@@ -192,17 +237,31 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                           Theme.of(context).textTheme.bodySmall,
                                     ))),
                               ]),
-                              const SizedBox(height: 7),
-                              Text(
-                                series.overview,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 7),
-                                width: double.infinity,
-                                height: 1,
-                                color: Colors.grey.shade400,
-                              ),
+                              if (series.overview.isNotEmpty)
+                                Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      width: double.infinity,
+                                      height: 1,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    Text(
+                                      series.overview,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      width: double.infinity,
+                                      height: 1,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ],
+                                ),
                               ScrollableTab(
                                 isScrollable: true,
                                 tabAlignment: TabAlignment.start,
@@ -224,7 +283,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                       children: [
                                         if (state.cast.isNotEmpty)
                                           SizedBox(
-                                            height: 170,
+                                            height: 175,
                                             child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,
@@ -283,7 +342,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                           ),
                                         if (state.crew.isNotEmpty)
                                           SizedBox(
-                                            height: 170,
+                                            height: 175,
                                             child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,
@@ -447,7 +506,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                       height: 10,
                                     ),
                                     SizedBox(
-                                      height: 150,
+                                      height: 180,
                                       child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount: state.similarMovies.length,

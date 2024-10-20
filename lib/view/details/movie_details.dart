@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
 
@@ -43,6 +44,45 @@ class MovieDetailsView extends StatelessWidget {
                           placeholder: (_, __) =>
                               const Center(child: CircularProgressIndicator()),
                           imageUrl: APIConfig.imageURL + movie.backdropPath,
+                          imageBuilder: (_, imageProvider) => Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                height: 270,
+                                clipBehavior: Clip.none,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover)),
+                              ),
+                              // Gradient overlay for fading effect
+                              Positioned.fill(
+                                child: Container(
+                                  height: 270,
+                                  clipBehavior: Clip.none,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors
+                                            .transparent, // Start with transparent
+                                        Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                            .withOpacity(0.3),
+                                        Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                      ],
+                                      begin: Alignment.center,
+                                      end: Alignment.bottomCenter,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -179,16 +219,31 @@ class MovieDetailsView extends StatelessWidget {
                                           Theme.of(context).textTheme.bodySmall,
                                     ))),
                               ]),
-                              const SizedBox(height: 7),
-                              Text(
-                                movie.overview,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 1,
-                                color: Colors.grey.shade400,
-                              ),
+                              if (movie.overview.isNotEmpty)
+                                Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      width: double.infinity,
+                                      height: 1,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    Text(
+                                      movie.overview,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      width: double.infinity,
+                                      height: 1,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ],
+                                ),
                               ScrollableTab(
                                 isScrollable: true,
                                 tabAlignment: TabAlignment.start,
@@ -198,9 +253,10 @@ class MovieDetailsView extends StatelessWidget {
                                     const Tab(
                                       text: "CAST + CREW",
                                     ),
-                                  const Tab(
-                                    text: "WHERE TO WATCH",
-                                  ),
+                                  if (state.watchProvider.isNotEmpty)
+                                    const Tab(
+                                      text: "WHERE TO WATCH",
+                                    ),
                                 ],
                                 children: [
                                   if (state.crew.isNotEmpty &&
@@ -326,37 +382,39 @@ class MovieDetailsView extends StatelessWidget {
                                                 }),
                                           )
                                       ],
-                                    )
-                                ],
-                              ),
-                              if (state.similarMovies.isNotEmpty)
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Similar Movies",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      height: 150,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: state.similarMovies.length,
-                                          itemBuilder: (_, i) {
-                                            var movie = state.similarMovies[i];
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0),
-                                              child: CachedNetworkImage(
-                                                  width: 100,
-                                                  key: ValueKey(movie.id),
-                                                  fit: BoxFit.cover,
+                                  if (state.watchProvider.isNotEmpty)
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Buy",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 10),
+                                            itemCount:
+                                                state.watchProvider.length,
+                                            itemBuilder: (_, i) {
+                                              var buyer =
+                                                  state.watchProvider[i];
+                                              return ListTile(
+                                                leading: CachedNetworkImage(
+                                                  imageUrl: APIConfig.imageURL +
+                                                      buyer.logoPath,
                                                   placeholder: (context, url) =>
                                                       Container(
+                                                          width: 50,
+                                                          height: 50,
                                                           decoration:
                                                               BoxDecoration(
                                                             border: Border.all(
@@ -376,6 +434,8 @@ class MovieDetailsView extends StatelessWidget {
                                                   errorWidget: (context, url,
                                                           error) =>
                                                       Container(
+                                                          width: 50,
+                                                          height: 50,
                                                           decoration:
                                                               BoxDecoration(
                                                             border: Border.all(
@@ -395,24 +455,130 @@ class MovieDetailsView extends StatelessWidget {
                                                   imageBuilder: (context,
                                                           imageProvider) =>
                                                       Container(
+                                                          width: 50,
+                                                          height: 50,
                                                           decoration:
                                                               BoxDecoration(
-                                                        border: Border.all(
-                                                            color: Colors
-                                                                .grey.shade400,
-                                                            width: 1),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                                Radius.circular(
-                                                                    10)),
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      )),
-                                                  imageUrl: APIConfig.imageURL +
-                                                      movie.posterPath),
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade400,
+                                                                width: 1),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10)),
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          )),
+                                                ),
+                                                title: Text(
+                                                  buyer.providerName,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium,
+                                                ),
+                                              );
+                                            }),
+                                      ],
+                                    )
+                                ],
+                              ),
+                              if (state.similarMovies.isNotEmpty)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Similar Movies",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      height: 180,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: state.similarMovies.length,
+                                          itemBuilder: (_, i) {
+                                            var movie = state.similarMovies[i];
+                                            return InkWell(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: CachedNetworkImage(
+                                                    width: 100,
+                                                    key: ValueKey(movie.id),
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (context, url) =>
+                                                        Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade400,
+                                                                  width: 1),
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                      Radius.circular(
+                                                                          10)),
+                                                            ),
+                                                            child: const Center(
+                                                                child:
+                                                                    CircularProgressIndicator())),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade400,
+                                                                  width: 1),
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                      Radius.circular(
+                                                                          10)),
+                                                            ),
+                                                            child: const Center(
+                                                                child: Icon(Icons
+                                                                    .error))),
+                                                    imageBuilder: (context,
+                                                            imageProvider) =>
+                                                        Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                          border: Border.all(
+                                                              color: Colors.grey
+                                                                  .shade400,
+                                                              width: 1),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          image:
+                                                              DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        )),
+                                                    imageUrl:
+                                                        APIConfig.imageURL +
+                                                            movie.posterPath),
+                                              ),
                                             );
                                           }),
                                     )
