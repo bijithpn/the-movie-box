@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 
 import 'core/client/api_client.dart';
-import 'view/home/home.dart';
 
 final getIt = GetIt.instance;
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -36,11 +36,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Movie Box',
       theme: ThemeData.dark(
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

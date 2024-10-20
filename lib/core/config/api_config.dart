@@ -27,6 +27,10 @@ class APIEndPoint {
     return "movie/$movieId/similar";
   }
 
+  static String reviewMovies(int movieId) {
+    return "movie/$movieId/reviews";
+  }
+
   static String seriesCredits(int seriesId) {
     return "tv/$seriesId/credits";
   }
@@ -46,5 +50,9 @@ class APIEndPoint {
 
   static String similarSeries(int seriesId) {
     return "tv/$seriesId/similar";
+  }
+
+  static String reviewSeries(int seriesId) {
+    return "tv/$seriesId/reviews";
   }
 }

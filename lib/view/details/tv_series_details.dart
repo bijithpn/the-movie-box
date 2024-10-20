@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
 
 import '../widgets/widgets.dart';
@@ -188,6 +189,14 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                     const Tab(
                                       text: "Seasons",
                                     ),
+                                  if (state.watchProvider.isNotEmpty)
+                                    const Tab(
+                                      text: "WHERE TO WATCH",
+                                    ),
+                                  if (state.reviews.isNotEmpty)
+                                    const Tab(
+                                      text: "REVIEWS",
+                                    ),
                                 ],
                                 children: [
                                   if (state.crew.isNotEmpty &&
@@ -207,10 +216,17 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                     seasons: series.seasons,
                                     seriesId: series.id,
                                     seriesName: series.name,
-                                  )
+                                  ),
+                                  WatchProviderWidget(
+                                    watchProvider: state.watchProvider,
+                                  ),
+                                  ReviewWidget(reviews: state.reviews)
                                 ],
                               ),
                               SimilarShowsWidget(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                    Routes.seriesDetail,
+                                    arguments: series.id),
                                 title: "Similar Series",
                                 similarShows: state.similarMovies,
                               )

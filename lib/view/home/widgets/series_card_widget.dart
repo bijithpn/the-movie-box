@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
-import 'package:the_movie_box/view/details/tv_series_details.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -29,14 +29,8 @@ class SeriesCardWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         var series = seriesList[index];
         return InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SeriesDetailsView(
-                          serieId: series.id,
-                        )));
-          },
+          onTap: () => Navigator.of(context)
+              .pushNamed(Routes.seriesDetail, arguments: series.id),
           child: CachedImageWidget(
               key: ValueKey(series.id),
               fit: BoxFit.cover,

@@ -4,6 +4,7 @@ import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_details.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
+import 'package:the_movie_box/data/model/review_model.dart';
 import 'package:the_movie_box/main.dart';
 
 class MovieRepository {
@@ -65,6 +66,21 @@ class MovieRepository {
       final res = await apiClient.get(APIEndPoint.similarMovies(movieID),
           queryParameters: body);
       res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
+      return showList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Reviews>> fetchSeriesReview(int movieID) async {
+    try {
+      List<Reviews> showList = [];
+      var body = {"language": "en-US", "page": 1};
+      final res = await apiClient.get(APIEndPoint.reviewMovies(movieID),
+          queryParameters: body);
+      res.data['results']
+          .map((e) => showList.add(Reviews.fromJson(e)))
+          .toList();
       return showList;
     } catch (e) {
       rethrow;

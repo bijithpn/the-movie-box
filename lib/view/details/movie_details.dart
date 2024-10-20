@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
 import 'package:the_movie_box/view/details/widget/widget.dart';
 
@@ -170,6 +170,10 @@ class MovieDetailsView extends StatelessWidget {
                                     const Tab(
                                       text: "WHERE TO WATCH",
                                     ),
+                                  if (state.reviews.isNotEmpty)
+                                    const Tab(
+                                      text: "REVIEWS",
+                                    ),
                                 ],
                                 children: [
                                   if (state.crew.isNotEmpty &&
@@ -184,113 +188,16 @@ class MovieDetailsView extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                  if (state.watchProvider.isNotEmpty)
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Buy",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 10),
-                                            itemCount:
-                                                state.watchProvider.length,
-                                            itemBuilder: (_, i) {
-                                              var buyer =
-                                                  state.watchProvider[i];
-                                              return ListTile(
-                                                leading: CachedNetworkImage(
-                                                  imageUrl: APIConfig.imageURL +
-                                                      buyer.logoPath,
-                                                  placeholder: (context, url) =>
-                                                      Container(
-                                                          width: 50,
-                                                          height: 50,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade400,
-                                                                width: 1),
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10)),
-                                                          ),
-                                                          child: const Center(
-                                                              child:
-                                                                  CircularProgressIndicator())),
-                                                  errorWidget: (context, url,
-                                                          error) =>
-                                                      Container(
-                                                          width: 50,
-                                                          height: 50,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade400,
-                                                                width: 1),
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10)),
-                                                          ),
-                                                          child: const Center(
-                                                              child: Icon(Icons
-                                                                  .error))),
-                                                  imageBuilder: (context,
-                                                          imageProvider) =>
-                                                      Container(
-                                                          width: 50,
-                                                          height: 50,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade400,
-                                                                width: 1),
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10)),
-                                                            image:
-                                                                DecorationImage(
-                                                              image:
-                                                                  imageProvider,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          )),
-                                                ),
-                                                title: Text(
-                                                  buyer.providerName,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium,
-                                                ),
-                                              );
-                                            }),
-                                      ],
-                                    )
+                                  WatchProviderWidget(
+                                    watchProvider: state.watchProvider,
+                                  ),
+                                  ReviewWidget(reviews: state.reviews)
                                 ],
                               ),
                               SimilarShowsWidget(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                    Routes.movieDetails,
+                                    arguments: movie.id),
                                 similarShows: state.similarMovies,
                               )
                             ],

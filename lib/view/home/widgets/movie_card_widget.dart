@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
-import 'package:the_movie_box/view/details/movie_details.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -29,14 +29,8 @@ class MovieCardWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         var movie = movieList[index];
         return InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MovieDetailsView(
-                          movieId: movie.id,
-                        )));
-          },
+          onTap: () => Navigator.of(context)
+              .pushNamed(Routes.movieDetails, arguments: movie.id),
           child: CachedImageWidget(
               key: ValueKey(movie.id),
               fit: BoxFit.cover,

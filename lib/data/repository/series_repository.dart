@@ -2,6 +2,8 @@ import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
+import 'package:the_movie_box/data/model/platform_model.dart';
+import 'package:the_movie_box/data/model/review_model.dart';
 import 'package:the_movie_box/data/model/series_details.dart';
 import 'package:the_movie_box/data/model/series_episodes.dart';
 import 'package:the_movie_box/main.dart';
@@ -73,11 +75,31 @@ class SeriesRepository {
     }
   }
 
-  Future<void> fetchWhereToWatchSeries(int seriesId) async {
+  Future<List<Reviews>> fetchSeriesReview(int seriesId) async {
+    try {
+      List<Reviews> showList = [];
+      var body = {"language": "en-US", "page": 1};
+      final res = await apiClient.get(APIEndPoint.reviewSeries(seriesId),
+          queryParameters: body);
+      res.data['results']
+          .map((e) => showList.add(Reviews.fromJson(e)))
+          .toList();
+      return showList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Buy>> fetchWhereToWatchSeries(int seriesId) async {
     try {
       final res = await apiClient.get(
         APIEndPoint.watchProvidersSeries(seriesId),
       );
+      List<Buy> buyers = [];
+      (res.data['results']['CA']?['buy'] ?? [])
+          .map((e) => buyers.add(Buy.fromJson(e)))
+          .toList();
+      return buyers;
     } catch (e) {
       rethrow;
     }

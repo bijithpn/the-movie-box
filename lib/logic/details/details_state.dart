@@ -19,9 +19,11 @@ final class MovieDetailsLoaded extends DetailsState {
   final List<Crew> crew;
   final List<Show> similarMovies;
   final List<Buy> watchProvider;
+  final List<Reviews> reviews;
   const MovieDetailsLoaded(
       {required this.cast,
       required this.watchProvider,
+      required this.reviews,
       required this.crew,
       required this.similarMovies,
       required this.movie});
@@ -32,11 +34,16 @@ final class SeriesDetailsLoaded extends DetailsState {
   final List<Cast> cast;
   final List<Crew> crew;
   final List<Show> similarMovies;
-  const SeriesDetailsLoaded(
-      {required this.cast,
-      required this.crew,
-      required this.similarMovies,
-      required this.series});
+  final List<Buy> watchProvider;
+  final List<Reviews> reviews;
+  const SeriesDetailsLoaded({
+    required this.cast,
+    required this.crew,
+    required this.reviews,
+    required this.similarMovies,
+    required this.series,
+    required this.watchProvider,
+  });
 }
 
 final class SeriesEpisodesLoaded extends DetailsState {

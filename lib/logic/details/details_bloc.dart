@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
+import 'package:the_movie_box/data/model/review_model.dart';
 import 'package:the_movie_box/data/model/series_episodes.dart';
 import 'package:the_movie_box/data/repository/series_repository.dart';
 
@@ -26,6 +27,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           movieRepository.fetchMovieCredits(event.moiveId),
           movieRepository.fetchSimilarMovie(event.moiveId),
           movieRepository.fetchWhereToWatchMovie(event.moiveId),
+          movieRepository.fetchSeriesReview(event.moiveId),
         ]);
         emit(MovieDetailsLoaded(
           movie: result.first as MovieDetails,
@@ -33,6 +35,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           crew: (result[1] as Map<String, dynamic>)['crew'] as List<Crew>,
           similarMovies: result[2] as List<Show>,
           watchProvider: result[3] as List<Buy>,
+          reviews: result[4] as List<Reviews>,
         ));
       } catch (error, stacktrace) {
         debugPrint(stacktrace.toString());
@@ -47,6 +50,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           seriesRepository.fetchSeriesCredits(event.seriesId),
           seriesRepository.fetchSimilarSeries(event.seriesId),
           seriesRepository.fetchWhereToWatchSeries(event.seriesId),
+          seriesRepository.fetchSeriesReview(event.seriesId),
         ]);
 
         emit(SeriesDetailsLoaded(
@@ -54,6 +58,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           cast: (result[1] as Map<String, dynamic>)['cast'] as List<Cast>,
           crew: (result[1] as Map<String, dynamic>)['crew'] as List<Crew>,
           similarMovies: result[2] as List<Show>,
+          watchProvider: result[3] as List<Buy>,
+          reviews: result[4] as List<Reviews>,
         ));
       } catch (error, stacktrace) {
         debugPrint(stacktrace.toString());
