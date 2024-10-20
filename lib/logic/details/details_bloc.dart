@@ -62,13 +62,13 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     });
     on<GetSeriesEpisodesDetails>((event, emit) async {
       try {
-        emit(DetailsLoading());
+        emit(EpisodesDetailsLoading());
         var result = await seriesRepository.fetchSeriesEpisodes(
             event.seriesId, event.season);
         emit(SeriesEpisodesLoaded(seriesEpisodes: result));
       } catch (error, stackTrace) {
         print(stackTrace);
-        emit(DetailsError(error: error.toString()));
+        emit(SeriesEpisodeError(error: error.toString()));
       }
     });
   }

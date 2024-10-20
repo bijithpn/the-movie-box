@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';

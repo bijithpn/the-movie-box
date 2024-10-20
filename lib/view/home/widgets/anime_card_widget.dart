@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:the_movie_box/data/model/anime_model.dart';
+
+import '../../widgets/widgets.dart';
 // import 'package:the_movie_box/view/details/tv_anime_details.dart';
 
 class AnimeCardWidget extends StatelessWidget {
@@ -35,30 +36,9 @@ class AnimeCardWidget extends StatelessWidget {
             //               serieId: anime.id,
             //             )));
           },
-          child: CachedNetworkImage(
+          child: CachedImageWidget(
               key: ValueKey(anime.id),
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400, width: 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: const Center(child: CircularProgressIndicator())),
-              errorWidget: (context, url, error) => Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400, width: 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: const Center(child: Icon(Icons.error))),
-              imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400, width: 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  )),
               imageUrl: anime.coverImage.large),
         );
       },

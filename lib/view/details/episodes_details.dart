@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
 import 'package:the_movie_box/view/details/widget/rating_widget.dart';
+
+import '../widgets/widgets.dart';
 
 class SeriesEpisodeView extends StatelessWidget {
   final DetailsBloc detailsBloc;
@@ -29,7 +30,7 @@ class SeriesEpisodeView extends StatelessWidget {
         ),
         body: BlocBuilder<DetailsBloc, DetailsState>(
           builder: (context, state) {
-            if (state is DetailsLoading) {
+            if (state is EpisodesDetailsLoading) {
               return const Center(child: CircularProgressIndicator());
             }
             if (state is SeriesEpisodesLoaded) {
@@ -43,11 +44,9 @@ class SeriesEpisodeView extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CachedNetworkImage(
+                          CachedImageWidget(
                             height: 170,
                             fit: BoxFit.cover,
-                            placeholder: (_, __) => const Center(
-                                child: CircularProgressIndicator()),
                             imageUrl:
                                 "${APIConfig.imageURL}${series.posterPath}",
                           ),
@@ -84,17 +83,11 @@ class SeriesEpisodeView extends StatelessWidget {
                           itemBuilder: (_, i) {
                             var episode = series.episodes[i];
                             return ListTile(
-                              leading: Container(
+                              leading: CachedImageWidget(
                                 width: 80,
                                 height: 100,
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey.shade400),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: CachedNetworkImageProvider(
-                                            APIConfig.imageURL +
-                                                (episode.stillPath)))),
+                                imageUrl:
+                                    APIConfig.imageURL + (episode.stillPath),
                               ),
                               title: Text(
                                 "${episode.episodeNumber}. ${episode.name} ${episode.runtime != 0 ? "(${episode.runtime} mins)" : ""}",
@@ -117,7 +110,7 @@ class SeriesEpisodeView extends StatelessWidget {
                     ]),
               );
             }
-            if (state is DetailsError) {
+            if (state is SeriesEpisodeError) {
               return Center(child: Text(state.error));
             }
             return const Center(child: CircularProgressIndicator());

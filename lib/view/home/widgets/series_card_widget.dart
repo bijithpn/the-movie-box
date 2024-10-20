@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/view/details/tv_series_details.dart';
+
+import '../../widgets/widgets.dart';
 
 class SeriesCardWidget extends StatelessWidget {
   final List<Show> seriesList;
@@ -36,30 +37,9 @@ class SeriesCardWidget extends StatelessWidget {
                           serieId: series.id,
                         )));
           },
-          child: CachedNetworkImage(
+          child: CachedImageWidget(
               key: ValueKey(series.id),
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400, width: 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: const Center(child: CircularProgressIndicator())),
-              errorWidget: (context, url, error) => Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400, width: 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: const Center(child: Icon(Icons.error))),
-              imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400, width: 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  )),
               imageUrl: APIConfig.imageURL + series.posterPath),
         );
       },

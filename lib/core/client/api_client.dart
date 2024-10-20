@@ -56,9 +56,9 @@ class ApiClient {
         retries: 4,
         retryDelays: const [
           Duration(seconds: 1),
-          Duration(seconds: 2),
-          Duration(seconds: 3),
-          Duration(seconds: 4),
+          Duration(seconds: 7),
+          Duration(seconds: 14),
+          Duration(seconds: 16),
         ],
       ),
     );

@@ -11,6 +11,8 @@ final class DetailsInitial extends DetailsState {}
 
 final class DetailsLoading extends DetailsState {}
 
+final class EpisodesDetailsLoading extends DetailsState {}
+
 final class MovieDetailsLoaded extends DetailsState {
   final MovieDetails movie;
   final List<Cast> cast;
@@ -41,6 +43,13 @@ final class SeriesEpisodesLoaded extends DetailsState {
   final SeriesEpisodes seriesEpisodes;
   const SeriesEpisodesLoaded({
     required this.seriesEpisodes,
+  });
+}
+
+final class SeriesEpisodeError extends DetailsState {
+  final String error;
+  const SeriesEpisodeError({
+    required this.error,
   });
 }
 
