@@ -174,6 +174,10 @@ class MovieDetailsView extends StatelessWidget {
                                     const Tab(
                                       text: "REVIEWS",
                                     ),
+                                  if (state.videos.isNotEmpty)
+                                    const Tab(
+                                      text: "VIDEOS",
+                                    ),
                                 ],
                                 children: [
                                   if (state.crew.isNotEmpty &&
@@ -191,7 +195,8 @@ class MovieDetailsView extends StatelessWidget {
                                   WatchProviderWidget(
                                     watchProvider: state.watchProvider,
                                   ),
-                                  ReviewWidget(reviews: state.reviews)
+                                  ReviewWidget(reviews: state.reviews),
+                                  VideosWidget(videos: state.videos),
                                 ],
                               ),
                               SimilarShowsWidget(

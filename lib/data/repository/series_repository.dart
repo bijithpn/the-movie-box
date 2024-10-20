@@ -6,6 +6,7 @@ import 'package:the_movie_box/data/model/platform_model.dart';
 import 'package:the_movie_box/data/model/review_model.dart';
 import 'package:the_movie_box/data/model/series_details.dart';
 import 'package:the_movie_box/data/model/series_episodes.dart';
+import 'package:the_movie_box/data/model/video_model.dart';
 import 'package:the_movie_box/main.dart';
 
 class SeriesRepository {
@@ -38,8 +39,7 @@ class SeriesRepository {
   Future<SeriesDetails> fetchSeriesDetails(int seriesId) async {
     try {
       var body = {"language": "en-US"};
-      final res = await apiClient.get(
-          "${APIEndPoint.tvSeriesDetails}/$seriesId",
+      final res = await apiClient.get(APIEndPoint.seriesDetails(seriesId),
           queryParameters: body);
       return SeriesDetails.fromJson(res.data);
     } catch (e) {
@@ -100,6 +100,21 @@ class SeriesRepository {
           .map((e) => buyers.add(Buy.fromJson(e)))
           .toList();
       return buyers;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Videos>> fetchSeriesVideos(int seriesId) async {
+    try {
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.videosOfSeries(seriesId),
+          queryParameters: body);
+      List<Videos> videos = [];
+      (res.data['results'] ?? [])
+          .map((e) => videos.add(Videos.fromJson(e)))
+          .toList();
+      return videos;
     } catch (e) {
       rethrow;
     }

@@ -5,8 +5,6 @@ class APIConfig {
 
 class APIEndPoint {
   static const String discoverMovies = 'discover/movie';
-  static const String discoverTV = 'discover/tv';
-  static const String tvSeriesDetails = 'tv';
   static String movieDetails(int movieId) {
     return "movie/$movieId";
   }
@@ -29,6 +27,19 @@ class APIEndPoint {
 
   static String reviewMovies(int movieId) {
     return "movie/$movieId/reviews";
+  }
+
+  static String videosOfMovies(int movieId) {
+    return "movie/$movieId/videos";
+  }
+
+//--------------------------------------------------//
+//               Series api start
+//--------------------------------------------------//
+  static const String discoverTV = 'discover/tv';
+
+  static String seriesDetails(int movieId) {
+    return "tv/$movieId";
   }
 
   static String seriesCredits(int seriesId) {
@@ -54,5 +65,9 @@ class APIEndPoint {
 
   static String reviewSeries(int seriesId) {
     return "tv/$seriesId/reviews";
+  }
+
+  static String videosOfSeries(int seriesId) {
+    return "tv/$seriesId/videos";
   }
 }

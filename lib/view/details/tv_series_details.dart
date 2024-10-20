@@ -197,6 +197,10 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                     const Tab(
                                       text: "REVIEWS",
                                     ),
+                                  if (state.videos.isNotEmpty)
+                                    const Tab(
+                                      text: "VIDEOS",
+                                    ),
                                 ],
                                 children: [
                                   if (state.crew.isNotEmpty &&
@@ -220,7 +224,8 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                   WatchProviderWidget(
                                     watchProvider: state.watchProvider,
                                   ),
-                                  ReviewWidget(reviews: state.reviews)
+                                  ReviewWidget(reviews: state.reviews),
+                                  VideosWidget(videos: state.videos),
                                 ],
                               ),
                               SimilarShowsWidget(

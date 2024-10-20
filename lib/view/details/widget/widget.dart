@@ -6,4 +6,5 @@ export 'review_widget.dart';
 export 'scrollable_tabbar.dart';
 export 'season_view_builder.dart';
 export 'similar_show.dart';
+export 'video_widget.dart';
 export 'watch_provider_widget.dart';

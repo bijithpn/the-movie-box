@@ -5,6 +5,7 @@ import 'package:the_movie_box/data/model/movie_details.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
 import 'package:the_movie_box/data/model/review_model.dart';
+import 'package:the_movie_box/data/model/video_model.dart';
 import 'package:the_movie_box/main.dart';
 
 class MovieRepository {
@@ -72,7 +73,7 @@ class MovieRepository {
     }
   }
 
-  Future<List<Reviews>> fetchSeriesReview(int movieID) async {
+  Future<List<Reviews>> fetchMoviesReview(int movieID) async {
     try {
       List<Reviews> showList = [];
       var body = {"language": "en-US", "page": 1};
@@ -97,6 +98,21 @@ class MovieRepository {
           .map((e) => buyers.add(Buy.fromJson(e)))
           .toList();
       return buyers;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Videos>> fetchMoviesVideos(int movieID) async {
+    try {
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.videosOfMovies(movieID),
+          queryParameters: body);
+      List<Videos> videos = [];
+      (res.data['results'] ?? [])
+          .map((e) => videos.add(Videos.fromJson(e)))
+          .toList();
+      return videos;
     } catch (e) {
       rethrow;
     }
