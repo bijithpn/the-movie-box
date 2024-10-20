@@ -39,6 +39,11 @@ class APIEndPoint {
     return "tv/$seriesId/external_ids";
   }
 
+  static String seriesSeasonDetails(
+      {required int seriesId, required int season}) {
+    return "tv/$seriesId/season/$season";
+  }
+
   static String similarSeries(int seriesId) {
     return "tv/$seriesId/similar";
   }

@@ -3,15 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
+import 'package:the_movie_box/view/details/episodes_details.dart';
 
 import 'widget/scrollable_tabbar.dart';
 
-class SeriesDetailsView extends StatelessWidget {
+class SeriesDetailsView extends StatefulWidget {
   final int serieId;
   const SeriesDetailsView({
     super.key,
     required this.serieId,
   });
+
+  @override
+  State<SeriesDetailsView> createState() => _SeriesDetailsViewState();
+}
+
+class _SeriesDetailsViewState extends State<SeriesDetailsView> {
+  late DetailsBloc detailsBloc;
+  @override
+  void initState() {
+    detailsBloc = DetailsBloc()..add(GetSeriesDetails(widget.serieId));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,7 @@ class SeriesDetailsView extends StatelessWidget {
           backgroundColor: Colors.transparent,
         ),
         body: BlocProvider(
-          create: (context) => DetailsBloc()..add(GetSeriesDetails(serieId)),
+          create: (context) => detailsBloc,
           child: BlocBuilder<DetailsBloc, DetailsState>(
             builder: (context, state) {
               if (state is DetailsLoading) {
@@ -338,59 +351,83 @@ class SeriesDetailsView extends StatelessWidget {
                                         itemCount: series.seasons.length,
                                         itemBuilder: (_, i) {
                                           var season = series.seasons[i];
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  width: 80,
-                                                  height: 100,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors
-                                                              .grey.shade400),
-                                                      image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: CachedNetworkImageProvider(
-                                                              APIConfig
-                                                                      .imageURL +
-                                                                  (season.posterPath ??
-                                                                      "")))),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        season.name,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyLarge,
-                                                      ),
-                                                      if (season
-                                                          .overview.isNotEmpty)
+                                          return InkWell(
+                                            onTap: () {
+                                              detailsBloc.add(
+                                                  GetSeriesEpisodesDetails(
+                                                      seriesId: widget.serieId,
+                                                      season:
+                                                          season.seasonNumber));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SeriesEpisodeView(
+                                                      seriesName: series.name,
+                                                      detailsBloc: detailsBloc,
+                                                      seasonCount:
+                                                          season.seasonNumber,
+                                                    ),
+                                                  ));
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 80,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors
+                                                                .grey.shade400),
+                                                        image: DecorationImage(
+                                                            fit: BoxFit.cover,
+                                                            image: CachedNetworkImageProvider(
+                                                                APIConfig
+                                                                        .imageURL +
+                                                                    (season.posterPath ??
+                                                                        "")))),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
                                                         Text(
-                                                          season.overview,
+                                                          season.name,
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .bodyMedium,
-                                                          maxLines: 4,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
+                                                                  .bodyLarge,
+                                                        ),
+                                                        if (season.overview
+                                                            .isNotEmpty)
+                                                          Text(
+                                                            season.overview,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyMedium,
+                                                            maxLines: 4,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          )
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           );
                                         })

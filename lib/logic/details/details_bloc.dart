@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
+import 'package:the_movie_box/data/model/series_episodes.dart';
 import 'package:the_movie_box/data/repository/series_repository.dart';
 
 import '../../data/model/movie_details.dart';
@@ -48,6 +49,16 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           crew: (result[1] as Map<String, dynamic>)['crew'] as List<Crew>,
           similarMovies: result[2] as List<Show>,
         ));
+      } catch (error) {
+        emit(DetailsError(error: error.toString()));
+      }
+    });
+    on<GetSeriesEpisodesDetails>((event, emit) async {
+      try {
+        emit(DetailsLoading());
+        var result = await seriesRepository.fetchSeriesEpisodes(
+            event.seriesId, event.season);
+        emit(SeriesEpisodesLoaded(seriesEpisodes: result));
       } catch (error, stackTrace) {
         print(stackTrace);
         emit(DetailsError(error: error.toString()));

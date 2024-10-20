@@ -3,6 +3,7 @@ import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/series_details.dart';
+import 'package:the_movie_box/data/model/series_episodes.dart';
 import 'package:the_movie_box/main.dart';
 
 class SeriesRepository {
@@ -80,6 +81,17 @@ class SeriesRepository {
       );
       res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
       return showList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<SeriesEpisodes> fetchSeriesEpisodes(int seriesId, int season) async {
+    try {
+      final res = await apiClient.get(
+        APIEndPoint.seriesSeasonDetails(seriesId: seriesId, season: season),
+      );
+      return SeriesEpisodes.fromJson(res.data);
     } catch (e) {
       rethrow;
     }

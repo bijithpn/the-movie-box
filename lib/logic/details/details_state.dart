@@ -35,6 +35,13 @@ final class SeriesDetailsLoaded extends DetailsState {
       required this.series});
 }
 
+final class SeriesEpisodesLoaded extends DetailsState {
+  final SeriesEpisodes seriesEpisodes;
+  const SeriesEpisodesLoaded({
+    required this.seriesEpisodes,
+  });
+}
+
 final class DetailsError extends DetailsState {
   final String error;
   const DetailsError({required this.error});
