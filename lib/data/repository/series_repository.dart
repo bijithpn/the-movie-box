@@ -1,5 +1,6 @@
 import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
+import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/series_details.dart';
 import 'package:the_movie_box/main.dart';
@@ -38,8 +39,48 @@ class SeriesRepository {
           "${APIEndPoint.tvSeriesDetails}/$seriesId",
           queryParameters: body);
       return SeriesDetails.fromJson(res.data);
-    } catch (e, stackTrace) {
-      print(stackTrace);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchSeriesCredits(int seriesId) async {
+    try {
+      List<Cast> castList = [];
+      List<Crew> crewList = [];
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.seriesCredits(seriesId),
+          queryParameters: body);
+      res.data['cast'].map((e) => castList.add(Cast.fromJson(e))).toList();
+      res.data['crew'].map((e) => crewList.add(Crew.fromJson(e))).toList();
+      return {"cast": castList, "crew": crewList};
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Show>> fetchSimilarSeries(int seriesId) async {
+    try {
+      List<Show> showList = [];
+      var body = {"language": "en-US", "page": 1};
+      final res = await apiClient.get(APIEndPoint.similarSeries(seriesId),
+          queryParameters: body);
+      res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
+      return showList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Show>> fetchWhereToWatchSeries(int seriesId) async {
+    try {
+      List<Show> showList = [];
+      final res = await apiClient.get(
+        APIEndPoint.watchProvidersSeries(seriesId),
+      );
+      res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
+      return showList;
+    } catch (e) {
       rethrow;
     }
   }

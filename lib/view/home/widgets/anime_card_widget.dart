@@ -36,16 +36,23 @@ class AnimeCardWidget extends StatelessWidget {
             //             )));
           },
           child: CachedNetworkImage(
+              key: ValueKey(anime.id),
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
+                    border: Border.all(color: Colors.grey.shade400, width: 1),
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                   ),
                   child: const Center(child: CircularProgressIndicator())),
+              errorWidget: (context, url, error) => Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade400, width: 1),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: const Center(child: Icon(Icons.error))),
               imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
+                    border: Border.all(color: Colors.grey.shade400, width: 1),
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     image: DecorationImage(
                       image: imageProvider,

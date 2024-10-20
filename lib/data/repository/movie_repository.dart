@@ -1,5 +1,6 @@
 import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
+import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_details.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/main.dart';
@@ -33,9 +34,50 @@ class MovieRepository {
   Future<MovieDetails> fetchMovieDetails(int movieID) async {
     try {
       var body = {"language": "en-US"};
-      final res = await apiClient.get("${APIEndPoint.movieDetails}/$movieID",
+      final res = await apiClient.get(APIEndPoint.movieDetails(movieID),
           queryParameters: body);
       return MovieDetails.fromJson(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchMovieCredits(int movieID) async {
+    try {
+      List<Cast> castList = [];
+      List<Crew> crewList = [];
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.movieCredits(movieID),
+          queryParameters: body);
+      res.data['cast'].map((e) => castList.add(Cast.fromJson(e))).toList();
+      res.data['crew'].map((e) => crewList.add(Crew.fromJson(e))).toList();
+      return {"cast": castList, "crew": crewList};
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Show>> fetchSimilarMovie(int movieID) async {
+    try {
+      List<Show> showList = [];
+      var body = {"language": "en-US", "page": 1};
+      final res = await apiClient.get(APIEndPoint.similarMovies(movieID),
+          queryParameters: body);
+      res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
+      return showList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Show>> fetchWhereTOWatchMovie(int movieID) async {
+    try {
+      List<Show> showList = [];
+      final res = await apiClient.get(
+        APIEndPoint.watchProvidersMovies(movieID),
+      );
+      res.data['results'].map((e) => showList.add(Show.fromJson(e))).toList();
+      return showList;
     } catch (e) {
       rethrow;
     }

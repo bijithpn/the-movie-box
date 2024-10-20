@@ -13,12 +13,26 @@ final class DetailsLoading extends DetailsState {}
 
 final class MovieDetailsLoaded extends DetailsState {
   final MovieDetails movie;
-  const MovieDetailsLoaded({required this.movie});
+  final List<Cast> cast;
+  final List<Crew> crew;
+  final List<Show> similarMovies;
+  const MovieDetailsLoaded(
+      {required this.cast,
+      required this.crew,
+      required this.similarMovies,
+      required this.movie});
 }
 
 final class SeriesDetailsLoaded extends DetailsState {
   final SeriesDetails series;
-  const SeriesDetailsLoaded({required this.series});
+  final List<Cast> cast;
+  final List<Crew> crew;
+  final List<Show> similarMovies;
+  const SeriesDetailsLoaded(
+      {required this.cast,
+      required this.crew,
+      required this.similarMovies,
+      required this.series});
 }
 
 final class DetailsError extends DetailsState {

@@ -121,6 +121,7 @@ class _HomeViewState extends State<HomeView>
             "Popular",
             style: Theme.of(context).textTheme.titleLarge,
           ),
+          actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {}),],
           bottom: TabBar(
             controller: _tabController,
             tabs: const [
