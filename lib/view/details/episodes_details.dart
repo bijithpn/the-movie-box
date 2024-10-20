@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
+import 'package:the_movie_box/view/details/widget/rating_widget.dart';
 
 class SeriesEpisodeView extends StatelessWidget {
   final DetailsBloc detailsBloc;
@@ -34,10 +35,13 @@ class SeriesEpisodeView extends StatelessWidget {
             if (state is SeriesEpisodesLoaded) {
               var series = state.seriesEpisodes;
               return SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CachedNetworkImage(
                             height: 170,
@@ -93,7 +97,7 @@ class SeriesEpisodeView extends StatelessWidget {
                                                 (episode.stillPath)))),
                               ),
                               title: Text(
-                                "${episode.episodeNumber}. ${episode.name}",
+                                "${episode.episodeNumber}. ${episode.name} ${episode.runtime != 0 ? "(${episode.runtime} mins)" : ""}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
@@ -105,7 +109,9 @@ class SeriesEpisodeView extends StatelessWidget {
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              trailing: Text(episode.voteAverage.toString()),
+                              trailing: episode.voteAverage > 0
+                                  ? CircularRating(rating: episode.voteAverage)
+                                  : null,
                             );
                           }),
                     ]),
