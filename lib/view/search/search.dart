@@ -31,8 +31,12 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Movies/TV'),
+        title: Text(
+          'Search Movies/TV',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (context) => searchBloc,
         child: Padding(
@@ -54,12 +58,17 @@ class _SearchPageState extends State<SearchPage> {
                   }
                 },
                 decoration: InputDecoration(
-                  labelText: 'Search your favorite shows',
+                  labelText: 'Search',
+                  hintText: 'Search your favorite shows',
                   suffixIcon: Switch(
                     value: !_isMovie,
                     thumbIcon: _isMovie
-                        ? const WidgetStatePropertyAll(Icon(Icons.movie))
-                        : const WidgetStatePropertyAll(Icon(Icons.live_tv)),
+                        ? const WidgetStatePropertyAll(Icon(
+                            Icons.movie,
+                          ))
+                        : const WidgetStatePropertyAll(Icon(
+                            Icons.live_tv,
+                          )),
                     onChanged: (value) {
                       _toggleSearchType();
                     },
