@@ -5,7 +5,6 @@ import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
 import 'package:the_movie_box/data/model/review_model.dart';
-import 'package:the_movie_box/data/model/series_episodes.dart';
 import 'package:the_movie_box/data/model/video_model.dart';
 import 'package:the_movie_box/data/repository/series_repository.dart';
 
@@ -69,17 +68,6 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       } catch (error, stacktrace) {
         debugPrint(stacktrace.toString());
         emit(DetailsError(error: error.toString()));
-      }
-    });
-    on<GetSeriesEpisodesDetails>((event, emit) async {
-      try {
-        emit(EpisodesDetailsLoading());
-        var result = await seriesRepository.fetchSeriesEpisodes(
-            event.seriesId, event.season);
-        emit(SeriesEpisodesLoaded(seriesEpisodes: result));
-      } catch (error, stackTrace) {
-        print(stackTrace);
-        emit(SeriesEpisodeError(error: error.toString()));
       }
     });
   }

@@ -267,7 +267,8 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
               if (state is DetailsError) {
                 return Center(child: Text(state.error));
               }
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: Text("Something went wrong please try again later"));
             },
           ),
         ),

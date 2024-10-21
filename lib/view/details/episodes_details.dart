@@ -3,32 +3,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
-import 'package:the_movie_box/logic/details/details_bloc.dart';
+import 'package:the_movie_box/logic/Series/series_episode_bloc.dart';
 import 'package:the_movie_box/view/details/widget/rating_widget.dart';
 
 import '../widgets/widgets.dart';
 
 class SeriesEpisodeView extends StatelessWidget {
-  final DetailsBloc detailsBloc;
   final int seasonCount;
+  final int seriesId;
   final String seriesName;
   const SeriesEpisodeView({
     super.key,
-    required this.detailsBloc,
     required this.seasonCount,
     required this.seriesName,
+    required this.seriesId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: detailsBloc,
+    return BlocProvider(
+      create: (context) => SeriesEpisodeBloc()
+        ..add(
+            GetSeriesEpisodesDetails(seriesId: seriesId, season: seasonCount)),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text("Season $seasonCount"),
         ),
-        body: BlocBuilder<DetailsBloc, DetailsState>(
+        body: BlocBuilder<SeriesEpisodeBloc, SeriesEpisodeState>(
           builder: (context, state) {
             if (state is EpisodesDetailsLoading) {
               return const Center(child: CircularProgressIndicator());

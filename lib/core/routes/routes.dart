@@ -41,7 +41,7 @@ class RouteGenerator {
         if (args is Map<String, dynamic>) {
           return MaterialPageRoute(
             builder: (_) => SeriesEpisodeView(
-              detailsBloc: args['detailsBloc'],
+              seriesId: args['seriesId'],
               seasonCount: args['seasonCount'],
               seriesName: args['seriesName'],
             ),

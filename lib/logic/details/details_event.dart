@@ -16,12 +16,3 @@ class GetSeriesDetails extends DetailsEvent {
   final int seriesId;
   const GetSeriesDetails(this.seriesId);
 }
-
-class GetSeriesEpisodesDetails extends DetailsEvent {
-  final int seriesId;
-  final int season;
-  const GetSeriesEpisodesDetails({
-    required this.seriesId,
-    required this.season,
-  });
-}
