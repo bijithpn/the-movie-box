@@ -9,13 +9,13 @@ class SimilarShowsWidget extends StatelessWidget {
   final List<Show> similarShows;
   final String title;
   final double? height;
-  final VoidCallback? onTap;
+  final Function(int id) onTap;
   const SimilarShowsWidget({
     super.key,
     required this.similarShows,
     this.title = "Similar Movies",
     this.height = 190,
-    this.onTap,
+    required this.onTap,
   });
 
   @override
@@ -40,7 +40,7 @@ class SimilarShowsWidget extends StatelessWidget {
                     itemBuilder: (_, i) {
                       var show = similarShows[i];
                       return InkWell(
-                        onTap: onTap,
+                        onTap: () => onTap(show.id),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: CachedImageWidget(

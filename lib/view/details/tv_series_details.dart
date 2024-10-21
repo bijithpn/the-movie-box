@@ -80,38 +80,57 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                                   fontWeight: FontWeight.bold),
                                         ),
                                         if (series.tagline.isNotEmpty)
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 7),
-                                            child: Text(
-                                              series.tagline,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            ),
-                                          ),
-                                        Text(
-                                          "Production ",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          series.productionCompanies
-                                              .map((e) => e.name)
-                                              .join(', '),
-                                          maxLines: 4,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                height: 1.5,
+                                          Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 7),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: Text(
+                                                series.tagline,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium,
+                                              )),
+                                        if (series
+                                            .productionCompanies.isNotEmpty)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Production ",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                               ),
-                                        ),
-                                        const SizedBox(height: 7),
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 2, bottom: 7),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                child: Text(
+                                                  series.productionCompanies
+                                                      .map((e) => e.name)
+                                                      .join(', '),
+                                                  maxLines: 4,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!
+                                                      .copyWith(
+                                                        height: 1.5,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -233,9 +252,9 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                 ],
                               ),
                               SimilarShowsWidget(
-                                onTap: () => Navigator.of(context).pushNamed(
+                                onTap: (id) => Navigator.of(context).pushNamed(
                                     Routes.seriesDetail,
-                                    arguments: series.id),
+                                    arguments: id),
                                 title: "Similar Series",
                                 similarShows: state.similarMovies,
                               )

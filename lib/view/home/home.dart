@@ -118,7 +118,76 @@ class _HomeViewState extends State<HomeView>
     return BlocProvider(
       create: (_) => _homeBloc,
       child: Scaffold(
-        drawer: const Drawer(),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(children: [
+                  DrawerHeader(
+                      child: Center(
+                    child: Text(
+                      "The Movie Box",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  )),
+                  ListTile(
+                    leading: const Icon(Icons.movie),
+                    title: Text(
+                      "Trending Movies",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.live_tv),
+                    title: Text(
+                      "Trending Series",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.watch_later_rounded),
+                    title: Text(
+                      "Watch list",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: Text(
+                      "Settings",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ]),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: RichText(
+                  text: TextSpan(
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
+                    children: const [
+                      TextSpan(text: "Made with "),
+                      WidgetSpan(
+                        child: FlutterLogo(size: 23),
+                      ),
+                      TextSpan(text: " with "),
+                      TextSpan(
+                        text: "❤️",
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
         appBar: AppBar(
           title: Text(
             "Popular",

@@ -44,6 +44,7 @@ class MovieDetailsView extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 15),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
@@ -63,46 +64,56 @@ class MovieDetailsView extends StatelessWidget {
                                             .copyWith(
                                                 fontWeight: FontWeight.bold),
                                       ),
-                                      const SizedBox(height: 7),
-                                      SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2,
-                                          child: Text(
-                                            movie.tagline,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          )),
-                                      const SizedBox(height: 7),
-                                      Text(
-                                        "Production ",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
+                                      if (movie.tagline.isNotEmpty)
+                                        Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 7),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
                                                 2,
-                                        child: Text(
-                                          movie.productionCompanies
-                                              .map((e) => e.name)
-                                              .join(', '),
-                                          maxLines: 4,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                height: 1.5,
+                                            child: Text(
+                                              movie.tagline,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            )),
+                                      if (movie.productionCompanies.isNotEmpty)
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Production ",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                  top: 2, bottom: 7),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: Text(
+                                                movie.productionCompanies
+                                                    .map((e) => e.name)
+                                                    .join(', '),
+                                                maxLines: 4,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                      height: 1.5,
+                                                    ),
                                               ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      const SizedBox(height: 7),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -123,7 +134,6 @@ class MovieDetailsView extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              const SizedBox(height: 7),
                               Wrap(spacing: 10, children: [
                                 ...movie.genres.map((e) => Chip(
                                         label: Text(
@@ -203,9 +213,9 @@ class MovieDetailsView extends StatelessWidget {
                                 ],
                               ),
                               SimilarShowsWidget(
-                                onTap: () => Navigator.of(context).pushNamed(
+                                onTap: (id) => Navigator.of(context).pushNamed(
                                     Routes.movieDetails,
-                                    arguments: movie.id),
+                                    arguments: id),
                                 similarShows: state.similarMovies,
                               )
                             ],
