@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/logic/home/home_bloc.dart';
 import 'package:the_movie_box/view/home/widgets/anime_card_widget.dart';
-import 'package:the_movie_box/view/home/widgets/movie_card_widget.dart';
-
-import 'widgets/series_card_widget.dart';
+import 'package:the_movie_box/view/home/widgets/show_view_builder_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -79,13 +78,17 @@ class _HomeViewState extends State<HomeView>
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is HomeTVSeriesLoaded) {
-          return SeriesCardWidget(
-            seriesList: state.tvSeriesList,
+          return ShowViewBuilder(
+            showList: state.tvSeriesList,
+            onTap: (id) => Navigator.of(context)
+                .pushNamed(Routes.seriesDetail, arguments: id),
             scrollController: scrollController,
           );
         } else if (state is HomeMoviesLoaded) {
-          return MovieCardWidget(
-            movieList: state.movieList,
+          return ShowViewBuilder(
+            showList: state.movieList,
+            onTap: (id) => Navigator.of(context)
+                .pushNamed(Routes.movieDetails, arguments: id),
             scrollController: scrollController,
           );
         } else if (state is HomeAnimeLoaded) {
@@ -121,7 +124,13 @@ class _HomeViewState extends State<HomeView>
             "Popular",
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {}),],
+          actions: [
+            IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.search);
+                }),
+          ],
           bottom: TabBar(
             controller: _tabController,
             tabs: const [

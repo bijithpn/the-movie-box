@@ -117,4 +117,19 @@ class MovieRepository {
       rethrow;
     }
   }
+
+  Future<List<Show>> searchMovies(String query) async {
+    try {
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.searchMovies(query),
+          queryParameters: body);
+      List<Show> searchResult = [];
+      (res.data['results'] ?? [])
+          .map((e) => searchResult.add(Show.fromJson(e)))
+          .toList();
+      return searchResult;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

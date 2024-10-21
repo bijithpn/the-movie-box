@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
-import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 
 import '../../widgets/widgets.dart';
 
-class SeriesCardWidget extends StatelessWidget {
-  final List<Show> seriesList;
+class ShowViewBuilder extends StatelessWidget {
+  final List<Show> showList;
+  final Function(int id) onTap;
   final ScrollController? scrollController;
-  const SeriesCardWidget({
+
+  const ShowViewBuilder({
     super.key,
-    required this.seriesList,
+    required this.showList,
+    required this.onTap,
     this.scrollController,
   });
 
@@ -24,17 +26,16 @@ class SeriesCardWidget extends StatelessWidget {
           crossAxisCount: 3,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10),
-      itemCount: seriesList.length,
+      itemCount: showList.length,
       padding: const EdgeInsets.all(12.0),
       itemBuilder: (context, index) {
-        var series = seriesList[index];
+        var show = showList[index];
         return InkWell(
-          onTap: () => Navigator.of(context)
-              .pushNamed(Routes.seriesDetail, arguments: series.id),
+          onTap: () => onTap(show.id),
           child: CachedImageWidget(
-              key: ValueKey(series.id),
+              key: ValueKey(show.id),
               fit: BoxFit.cover,
-              imageUrl: APIConfig.imageURL + series.posterPath),
+              imageUrl: APIConfig.imageURL + show.posterPath),
         );
       },
     );

@@ -143,7 +143,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                 ],
                               ),
                               const SizedBox(height: 7),
-                              Wrap(spacing: 10, runSpacing: 10, children: [
+                              Wrap(spacing: 10, children: [
                                 ...series.genres.map((e) => Chip(
                                         label: Text(
                                       e.name,
@@ -215,17 +215,21 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                         )
                                       ],
                                     ),
-                                  SeasonViewBuilder(
-                                    detailsBloc: detailsBloc,
-                                    seasons: series.seasons,
-                                    seriesId: series.id,
-                                    seriesName: series.name,
-                                  ),
-                                  WatchProviderWidget(
-                                    watchProvider: state.watchProvider,
-                                  ),
-                                  ReviewWidget(reviews: state.reviews),
-                                  VideosWidget(videos: state.videos),
+                                  if (series.seasons.isNotEmpty)
+                                    SeasonViewBuilder(
+                                      detailsBloc: detailsBloc,
+                                      seasons: series.seasons,
+                                      seriesId: series.id,
+                                      seriesName: series.name,
+                                    ),
+                                  if (state.watchProvider.isNotEmpty)
+                                    WatchProviderWidget(
+                                      watchProvider: state.watchProvider,
+                                    ),
+                                  if (state.reviews.isNotEmpty)
+                                    ReviewWidget(reviews: state.reviews),
+                                  if (state.videos.isNotEmpty)
+                                    VideosWidget(videos: state.videos),
                                 ],
                               ),
                               SimilarShowsWidget(

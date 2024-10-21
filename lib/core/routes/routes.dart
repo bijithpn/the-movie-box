@@ -33,6 +33,10 @@ class RouteGenerator {
           builder: (_) => const ErrorScreen(
               errorMessage: 'Invalid arguments for series details'),
         );
+      case Routes.search:
+        return MaterialPageRoute(
+          builder: (_) => const SearchPage(),
+        );
       case Routes.episodeDetails:
         if (args is Map<String, dynamic>) {
           return MaterialPageRoute(
@@ -62,4 +66,5 @@ class Routes {
   static const String seriesDetail = '/seriesDetail';
   static const String episodeDetails = '/episodeDetails';
   static const String home = '/';
+  static const String search = '/search';
 }

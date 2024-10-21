@@ -33,6 +33,10 @@ class APIEndPoint {
     return "movie/$movieId/videos";
   }
 
+  static String searchMovies(String query) {
+    return "search/movie?query=$query";
+  }
+
 //--------------------------------------------------//
 //               Series api start
 //--------------------------------------------------//
@@ -69,5 +73,9 @@ class APIEndPoint {
 
   static String videosOfSeries(int seriesId) {
     return "tv/$seriesId/videos";
+  }
+
+  static String searchSeries(String query) {
+    return "search/tv?query=$query";
   }
 }

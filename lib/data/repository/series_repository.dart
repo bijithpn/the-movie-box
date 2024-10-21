@@ -130,4 +130,19 @@ class SeriesRepository {
       rethrow;
     }
   }
+
+  Future<List<Show>> searchSeries(String query) async {
+    try {
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.searchSeries(query),
+          queryParameters: body);
+      List<Show> searchResult = [];
+      (res.data['results'] ?? [])
+          .map((e) => searchResult.add(Show.fromJson(e)))
+          .toList();
+      return searchResult;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

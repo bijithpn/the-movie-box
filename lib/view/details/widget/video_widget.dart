@@ -29,25 +29,10 @@ class VideosWidget extends StatelessWidget {
                   Icons.smart_display,
                   color: Colors.red.withOpacity(.9),
                 ),
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        video.name,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        overflow: TextOverflow.clip,
-                      ),
-                    ),
-                    // if (video.official)
-                    //   const Padding(
-                    //     padding: EdgeInsets.symmetric(horizontal: 10),
-                    //     child: Icon(
-                    //       Icons.verified,
-                    //       size: 19,
-                    //       color: Colors.blue,
-                    //     ),
-                    //   )
-                  ],
+                title: Text(
+                  video.name,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  overflow: TextOverflow.clip,
                 ),
                 subtitle: Text(
                   "Platform: ${video.site}",

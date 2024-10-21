@@ -34,14 +34,16 @@ class SeriesEpisodes {
 
   factory SeriesEpisodes.fromJson(Map<String, dynamic> json) => SeriesEpisodes(
         id: json["_id"],
-        airDate: DateTime.parse(json["air_date"]),
+        airDate: json["air_date"] == null
+            ? DateTime.now()
+            : DateTime.parse(json["air_date"]),
         episodes: List<Episode>.from(
             json["episodes"].map((x) => Episode.fromJson(x))),
-        name: json["name"],
-        overview: json["overview"],
+        name: json["name"] ?? "",
+        overview: json["overview"] ?? "",
         seriesEpisodesId: json["id"],
-        posterPath: json["poster_path"],
-        seasonNumber: json["season_number"],
+        posterPath: json["poster_path"] ?? "",
+        seasonNumber: json["season_number"] ?? 1,
         voteAverage: json["vote_average"]?.toDouble(),
       );
 
@@ -88,8 +90,8 @@ class Episode {
 
   factory Episode.fromJson(Map<String, dynamic> json) => Episode(
         airDate: DateTime.parse(json["air_date"]),
-        episodeNumber: json["episode_number"],
-        episodeType: json["episode_type"],
+        episodeNumber: json["episode_number"] ?? 1,
+        episodeType: json["episode_type"] ?? "",
         id: json["id"],
         name: json["name"] ?? "",
         overview: json["overview"] ?? "",

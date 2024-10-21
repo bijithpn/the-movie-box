@@ -46,6 +46,7 @@ class SeriesEpisodeView extends StatelessWidget {
                         children: [
                           CachedImageWidget(
                             height: 170,
+                            width: 125,
                             fit: BoxFit.cover,
                             imageUrl:
                                 "${APIConfig.imageURL}${series.posterPath}",

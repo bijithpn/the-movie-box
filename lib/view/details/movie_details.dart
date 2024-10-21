@@ -124,7 +124,7 @@ class MovieDetailsView extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 7),
-                              Wrap(spacing: 10, runSpacing: 10, children: [
+                              Wrap(spacing: 10, children: [
                                 ...movie.genres.map((e) => Chip(
                                         label: Text(
                                       e.name,
@@ -192,11 +192,14 @@ class MovieDetailsView extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                  WatchProviderWidget(
-                                    watchProvider: state.watchProvider,
-                                  ),
-                                  ReviewWidget(reviews: state.reviews),
-                                  VideosWidget(videos: state.videos),
+                                  if (state.watchProvider.isNotEmpty)
+                                    WatchProviderWidget(
+                                      watchProvider: state.watchProvider,
+                                    ),
+                                  if (state.reviews.isNotEmpty)
+                                    ReviewWidget(reviews: state.reviews),
+                                  if (state.videos.isNotEmpty)
+                                    VideosWidget(videos: state.videos),
                                 ],
                               ),
                               SimilarShowsWidget(
