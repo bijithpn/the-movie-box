@@ -1,5 +1,6 @@
 export 'cast_widget.dart';
 export 'crew_widget.dart';
+export 'external_link_widget.dart';
 export 'main_image_view.dart';
 export 'rating_widget.dart';
 export 'review_widget.dart';

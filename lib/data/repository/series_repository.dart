@@ -1,6 +1,7 @@
 import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
+import 'package:the_movie_box/data/model/external_id_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
 import 'package:the_movie_box/data/model/review_model.dart';
@@ -141,6 +142,17 @@ class SeriesRepository {
           .map((e) => searchResult.add(Show.fromJson(e)))
           .toList();
       return searchResult;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ExternalIds> fetchExternalLinkForSeries(int seriesId) async {
+    try {
+      final res = await apiClient.get(
+        APIEndPoint.externalIdforMovies(seriesId),
+      );
+      return ExternalIds.fromJson(res.data);
     } catch (e) {
       rethrow;
     }

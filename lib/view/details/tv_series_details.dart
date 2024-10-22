@@ -35,7 +35,42 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () => Navigator.pop(context),
+                icon: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.6),
+                        shape: BoxShape.circle),
+                    child: const Icon(Icons.arrow_back, size: 20))),
+          ),
           backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {},
+                icon: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.6),
+                        shape: BoxShape.circle),
+                    child: const Icon(Icons.share, size: 20))),
+            IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {},
+                icon: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.6),
+                        shape: BoxShape.circle),
+                    child: const Icon(Icons.bookmark_add_outlined, size: 20))),
+          ],
         ),
         body: BlocProvider(
           create: (context) => detailsBloc,
@@ -250,6 +285,9 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                   if (state.videos.isNotEmpty)
                                     VideosWidget(videos: state.videos),
                                 ],
+                              ),
+                              ExternalLinkWidget(
+                                externalIds: state.externalIds,
                               ),
                               SimilarShowsWidget(
                                 currentShowId: series.id,

@@ -41,6 +41,10 @@ class APIEndPoint {
     return "collection/$movieId";
   }
 
+  static String externalIdforMovies(int movieId) {
+    return "movie/$movieId/external_ids";
+  }
+
 //--------------------------------------------------//
 //               Series api start
 //--------------------------------------------------//
@@ -81,5 +85,9 @@ class APIEndPoint {
 
   static String searchSeries(String query) {
     return "search/tv?query=$query";
+  }
+
+  static String externalIdforSeries(int seriesId) {
+    return "tv/$seriesId/external_ids";
   }
 }
