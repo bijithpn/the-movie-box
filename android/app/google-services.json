@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "494617655413",
+    "project_id": "movie-box-c4e97",
+    "storage_bucket": "movie-box-c4e97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494617655413:android:c99ec6fdcb0712b586603c",
+        "android_client_info": {
+          "package_name": "app.moviebox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQZddfM2aiaoN7H4wsZLJi9NyjPvzIv_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

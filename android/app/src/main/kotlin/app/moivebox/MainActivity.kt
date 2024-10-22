@@ -1,4 +1,4 @@
-package com.example.letter_box_clone
+package app.moviebox
 
 import io.flutter.embedding.android.FlutterActivity
 
