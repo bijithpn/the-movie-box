@@ -8,20 +8,16 @@ String movieDetailsToJson(MovieDetails data) => json.encode(data.toJson());
 class MovieDetails {
   bool adult;
   String backdropPath;
-  int budget;
+  BelongsToCollection? belongsToCollection;
   List<Genre> genres;
   int id;
   String imdbId;
-  String originalLanguage;
-  String originalTitle;
   String overview;
   double popularity;
   String posterPath;
   List<ProductionCompany> productionCompanies;
   DateTime releaseDate;
-  int revenue;
   int runtime;
-  String status;
   String tagline;
   String title;
   bool video;
@@ -31,20 +27,16 @@ class MovieDetails {
   MovieDetails({
     required this.adult,
     required this.backdropPath,
-    required this.budget,
     required this.genres,
     required this.id,
+    this.belongsToCollection,
     required this.imdbId,
-    required this.originalLanguage,
-    required this.originalTitle,
     required this.overview,
     required this.popularity,
     required this.posterPath,
     required this.productionCompanies,
     required this.releaseDate,
-    required this.revenue,
     required this.runtime,
-    required this.status,
     required this.tagline,
     required this.title,
     required this.video,
@@ -54,13 +46,13 @@ class MovieDetails {
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) => MovieDetails(
         adult: json["adult"],
-        backdropPath: json["backdrop_path"],
-        budget: json["budget"],
+        backdropPath: json["backdrop_path"] ?? "",
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         id: json["id"],
         imdbId: json["imdb_id"],
-        originalLanguage: json["original_language"],
-        originalTitle: json["original_title"],
+        belongsToCollection: json["belongs_to_collection"] == null
+            ? null
+            : BelongsToCollection.fromJson(json["belongs_to_collection"]),
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
@@ -68,9 +60,7 @@ class MovieDetails {
             json["production_companies"]
                 .map((x) => ProductionCompany.fromJson(x))),
         releaseDate: DateTime.parse(json["release_date"]),
-        revenue: json["revenue"],
         runtime: json["runtime"],
-        status: json["status"],
         tagline: json["tagline"],
         title: json["title"],
         video: json["video"],
@@ -81,22 +71,18 @@ class MovieDetails {
   Map<String, dynamic> toJson() => {
         "adult": adult,
         "backdrop_path": backdropPath,
-        "budget": budget,
         "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
         "id": id,
         "imdb_id": imdbId,
-        "original_language": originalLanguage,
-        "original_title": originalTitle,
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
+        "belongs_to_collection": belongsToCollection?.toJson(),
         "production_companies":
             List<dynamic>.from(productionCompanies.map((x) => x.toJson())),
         "release_date":
             "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
-        "revenue": revenue,
         "runtime": runtime,
-        "status": status,
         "tagline": tagline,
         "title": title,
         "video": video,
@@ -151,5 +137,22 @@ class ProductionCompany {
         "logo_path": logoPath,
         "name": name,
         "origin_country": originCountry,
+      };
+}
+
+class BelongsToCollection {
+  int id;
+
+  BelongsToCollection({
+    required this.id,
+  });
+
+  factory BelongsToCollection.fromJson(Map<String, dynamic> json) =>
+      BelongsToCollection(
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
       };
 }

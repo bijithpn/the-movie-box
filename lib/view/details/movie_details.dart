@@ -52,79 +52,83 @@ class MovieDetailsView extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        movie.title,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                      if (movie.tagline.isNotEmpty)
-                                        Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 7),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                2,
-                                            child: Text(
-                                              movie.tagline,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            )),
-                                      if (movie.productionCompanies.isNotEmpty)
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Production ",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge!
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                  top: 2, bottom: 7),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          movie.title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        if (movie.tagline.isNotEmpty)
+                                          Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 7),
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
                                                   2,
                                               child: Text(
-                                                movie.productionCompanies
-                                                    .map((e) => e.name)
-                                                    .join(', '),
-                                                maxLines: 4,
+                                                movie.tagline,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .bodyMedium!
+                                                    .bodyMedium,
+                                              )),
+                                        if (movie
+                                            .productionCompanies.isNotEmpty)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Production ",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge!
                                                     .copyWith(
-                                                      height: 1.5,
-                                                    ),
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                               ),
-                                            ),
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 2, bottom: 7),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                child: Text(
+                                                  movie.productionCompanies
+                                                      .map((e) => e.name)
+                                                      .join(', '),
+                                                  maxLines: 4,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!
+                                                      .copyWith(
+                                                        height: 1.5,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        Row(
+                                          children: [
+                                            Text(movie.releaseDate.year
+                                                .toString()),
+                                            const SizedBox(width: 10),
+                                            Text("${movie.runtime} min"),
                                           ],
                                         ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(movie.releaseDate.year
-                                              .toString()),
-                                          const SizedBox(width: 10),
-                                          Text("${movie.runtime} min"),
-                                        ],
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   CachedImageWidget(
                                     width: 120,
@@ -212,7 +216,21 @@ class MovieDetailsView extends StatelessWidget {
                                     VideosWidget(videos: state.videos),
                                 ],
                               ),
+                              if (state.collection != null &&
+                                  state.collection!.shows.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: SimilarShowsWidget(
+                                    onTap: (id) => Navigator.of(context)
+                                        .pushNamed(Routes.movieDetails,
+                                            arguments: id),
+                                    title: "Related Movies",
+                                    similarShows: state.collection!.shows,
+                                    currentShowId: movieId,
+                                  ),
+                                ),
                               SimilarShowsWidget(
+                                currentShowId: movieId,
                                 onTap: (id) => Navigator.of(context).pushNamed(
                                     Routes.movieDetails,
                                     arguments: id),

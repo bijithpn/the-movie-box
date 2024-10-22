@@ -19,6 +19,7 @@ final class MovieDetailsLoaded extends DetailsState {
   final List<Buy> watchProvider;
   final List<Reviews> reviews;
   final List<Videos> videos;
+  final Collection? collection;
   const MovieDetailsLoaded(
       {required this.cast,
       required this.watchProvider,
@@ -26,7 +27,8 @@ final class MovieDetailsLoaded extends DetailsState {
       required this.reviews,
       required this.crew,
       required this.similarMovies,
-      required this.movie});
+      required this.movie,
+      this.collection});
 }
 
 final class SeriesDetailsLoaded extends DetailsState {

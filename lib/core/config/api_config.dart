@@ -37,6 +37,10 @@ class APIEndPoint {
     return "search/movie?query=$query";
   }
 
+  static String collectionMovies(int movieId) {
+    return "collection/$movieId";
+  }
+
 //--------------------------------------------------//
 //               Series api start
 //--------------------------------------------------//

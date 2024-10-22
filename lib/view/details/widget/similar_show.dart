@@ -8,12 +8,14 @@ import '../../widgets/widgets.dart';
 class SimilarShowsWidget extends StatelessWidget {
   final List<Show> similarShows;
   final String title;
+  final int currentShowId;
   final double? height;
   final Function(int id) onTap;
   const SimilarShowsWidget({
     super.key,
     required this.similarShows,
     this.title = "Similar Movies",
+    required this.currentShowId,
     this.height = 190,
     required this.onTap,
   });
@@ -39,17 +41,20 @@ class SimilarShowsWidget extends StatelessWidget {
                     itemCount: similarShows.length,
                     itemBuilder: (_, i) {
                       var show = similarShows[i];
-                      return InkWell(
-                        onTap: () => onTap(show.id),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: CachedImageWidget(
-                              width: 130,
-                              key: ValueKey(show.id),
-                              fit: BoxFit.cover,
-                              imageUrl: APIConfig.imageURL + show.posterPath),
-                        ),
-                      );
+                      return show.id == currentShowId
+                          ? const SizedBox.shrink()
+                          : InkWell(
+                              onTap: () => onTap(show.id),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: CachedImageWidget(
+                                    width: 130,
+                                    key: ValueKey(show.id),
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        APIConfig.imageURL + show.posterPath),
+                              ),
+                            );
                     }),
               )
             ],

@@ -252,6 +252,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                 ],
                               ),
                               SimilarShowsWidget(
+                                currentShowId: series.id,
                                 onTap: (id) => Navigator.of(context).pushNamed(
                                     Routes.seriesDetail,
                                     arguments: id),

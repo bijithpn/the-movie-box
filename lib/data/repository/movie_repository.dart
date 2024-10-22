@@ -1,6 +1,7 @@
 import 'package:the_movie_box/core/client/api_client.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
+import 'package:the_movie_box/data/model/collection_model.dart';
 import 'package:the_movie_box/data/model/movie_details.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
@@ -128,6 +129,17 @@ class MovieRepository {
           .map((e) => searchResult.add(Show.fromJson(e)))
           .toList();
       return searchResult;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Collection> fetchCollectionOfMovies(int movieId) async {
+    try {
+      var body = {"language": "en-US"};
+      final res = await apiClient.get(APIEndPoint.collectionMovies(movieId),
+          queryParameters: body);
+      return Collection.fromJson(res.data);
     } catch (e) {
       rethrow;
     }

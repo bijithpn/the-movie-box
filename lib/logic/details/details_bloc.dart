@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
+import 'package:the_movie_box/data/model/collection_model.dart';
 import 'package:the_movie_box/data/model/movie_model.dart';
 import 'package:the_movie_box/data/model/platform_model.dart';
 import 'package:the_movie_box/data/model/review_model.dart';
@@ -30,6 +31,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           movieRepository.fetchMoviesReview(event.moiveId),
           movieRepository.fetchMoviesVideos(event.moiveId),
         ]);
+        Collection? collection;
+        if ((result.first as MovieDetails).belongsToCollection != null) {
+          collection = await movieRepository.fetchCollectionOfMovies(
+              (result.first as MovieDetails).belongsToCollection!.id);
+        }
         emit(MovieDetailsLoaded(
           movie: result.first as MovieDetails,
           cast: (result[1] as Map<String, dynamic>)['cast'] as List<Cast>,
@@ -37,6 +43,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           similarMovies: result[2] as List<Show>,
           watchProvider: result[3] as List<Buy>,
           reviews: result[4] as List<Reviews>,
+          collection: collection,
           videos: result[5] as List<Videos>,
         ));
       } catch (error, stacktrace) {

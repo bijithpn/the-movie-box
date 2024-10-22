@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:the_movie_box/data/model/video_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../widgets/widgets.dart';
+
 class VideosWidget extends StatelessWidget {
   final List<Videos> videos;
   const VideosWidget({
@@ -25,9 +27,12 @@ class VideosWidget extends StatelessWidget {
                   await launchUrl(
                       Uri.parse('http://www.youtube.com/watch?v=${video.key}'));
                 },
-                leading: Icon(
-                  Icons.smart_display,
-                  color: Colors.red.withOpacity(.9),
+                leading: CachedImageWidget(
+                  width: 90,
+                  fit: BoxFit.cover,
+                  height: 100,
+                  imageUrl:
+                      "https://img.youtube.com/vi/${video.key}/hqdefault.jpg",
                 ),
                 title: Text(
                   video.name,

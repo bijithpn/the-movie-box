@@ -155,6 +155,13 @@ class _HomeViewState extends State<HomeView>
                     ),
                   ),
                   ListTile(
+                    leading: const Icon(Icons.theaters),
+                    title: Text(
+                      "Watch Providers",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  ListTile(
                     leading: const Icon(Icons.settings),
                     title: Text(
                       "Settings",
