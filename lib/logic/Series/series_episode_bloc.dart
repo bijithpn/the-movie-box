@@ -15,8 +15,7 @@ class SeriesEpisodeBloc extends Bloc<SeriesEpisodeEvent, SeriesEpisodeState> {
         var result = await seriesRepository.fetchSeriesEpisodes(
             event.seriesId, event.season);
         emit(SeriesEpisodesLoaded(seriesEpisodes: result));
-      } catch (error, stackTrace) {
-        print(stackTrace);
+      } catch (error) {
         emit(SeriesEpisodeError(error: error.toString()));
       }
     });

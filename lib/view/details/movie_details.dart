@@ -74,6 +74,7 @@ class MovieDetailsView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MainImageView(
+                            title: movie.title,
                             imageurl: APIConfig.imageURL + movie.backdropPath),
                         Padding(
                           padding: const EdgeInsets.symmetric(

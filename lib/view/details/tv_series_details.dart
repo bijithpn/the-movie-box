@@ -86,6 +86,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MainImageView(
+                          title: series.name,
                           imageurl: APIConfig.imageURL + series.backdropPath,
                         ),
                         Padding(
