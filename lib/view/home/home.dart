@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/logic/home/home_bloc.dart';
 import 'package:the_movie_box/view/home/widgets/anime_card_widget.dart';
@@ -80,15 +81,13 @@ class _HomeViewState extends State<HomeView>
         } else if (state is HomeTVSeriesLoaded) {
           return ShowViewBuilder(
             showList: state.tvSeriesList,
-            onTap: (id) => Navigator.of(context)
-                .pushNamed(Routes.seriesDetail, arguments: id),
+            onTap: (id) => context.push(Routes.seriesDetail(id)),
             scrollController: scrollController,
           );
         } else if (state is HomeMoviesLoaded) {
           return ShowViewBuilder(
             showList: state.movieList,
-            onTap: (id) => Navigator.of(context)
-                .pushNamed(Routes.movieDetails, arguments: id),
+            onTap: (id) => context.push(Routes.movieDetails(id)),
             scrollController: scrollController,
           );
         } else if (state is HomeAnimeLoaded) {
@@ -181,12 +180,12 @@ class _HomeViewState extends State<HomeView>
                         .copyWith(fontWeight: FontWeight.bold),
                     children: const [
                       TextSpan(text: "Made with "),
-                      WidgetSpan(
-                        child: FlutterLogo(size: 23),
-                      ),
-                      TextSpan(text: " with "),
                       TextSpan(
                         text: "❤️",
+                      ),
+                      TextSpan(text: " Using "),
+                      WidgetSpan(
+                        child: FlutterLogo(size: 23),
                       ),
                     ],
                   ),
@@ -204,7 +203,7 @@ class _HomeViewState extends State<HomeView>
             IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.search);
+                  context.push(Routes.search);
                 }),
           ],
           bottom: TabBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_movie_box/core/constants/image.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String errorMessage;
@@ -11,7 +12,7 @@ class ErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        elevation: 5,
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -32,11 +33,9 @@ class ErrorScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              size: 30,
-            ),
-            const SizedBox(height: 10),
+            Image.asset(AppImages.error,
+                width: MediaQuery.of(context).size.width / 1.5),
+            const SizedBox(height: 15),
             Text(
               "Oops, look like you lost",
               style: Theme.of(context).textTheme.titleLarge,

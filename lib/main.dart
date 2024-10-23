@@ -1,3 +1,5 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,6 +9,7 @@ import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'core/client/api_client.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 final getIt = GetIt.instance;
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -22,11 +25,15 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  FlutterError.onError = (FlutterErrorDetails details) {
-    debugPrint('Flutter Error : ${details.exception}');
-    debugPrint('Flutter StackTrace :${details.stack}');
+  FirebasePerformance performance = FirebasePerformance.instance;
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
   };
-  runApp(const MyApp());
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack);
+    return true;
+  };
+  runApp(MyApp());
 }
 
 Future<void> initializeClient() async {
@@ -35,18 +42,18 @@ Future<void> initializeClient() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
+  final approuter = AppRouter();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Movie Box',
-      theme: ThemeData.dark(
-        useMaterial3: true,
-      ),
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
-    );
+    return MaterialApp.router(
+        title: 'Movie Box',
+        theme: ThemeData.dark(
+          useMaterial3: true,
+        ),
+        routeInformationParser: approuter.router.routeInformationParser,
+        routeInformationProvider: approuter.router.routeInformationProvider,
+        routerDelegate: approuter.router.routerDelegate,
+        backButtonDispatcher: RootBackButtonDispatcher());
   }
 }

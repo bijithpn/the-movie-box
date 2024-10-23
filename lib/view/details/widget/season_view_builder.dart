@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/data/model/series_details.dart';
-import 'package:the_movie_box/logic/details/details_bloc.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -11,13 +11,11 @@ class SeasonViewBuilder extends StatelessWidget {
   final List<Season> seasons;
   final int seriesId;
   final String seriesName;
-  final DetailsBloc detailsBloc;
   const SeasonViewBuilder({
     super.key,
     required this.seasons,
     required this.seriesId,
     required this.seriesName,
-    required this.detailsBloc,
   });
 
   @override
@@ -35,12 +33,11 @@ class SeasonViewBuilder extends StatelessWidget {
                   ? const SizedBox.shrink()
                   : InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, Routes.episodeDetails,
-                            arguments: {
-                              "seriesName": seriesName,
-                              "seriesId": seriesId,
-                              "seasonCount": season.seasonNumber,
-                            });
+                        context.push(Routes.episodeDetails, extra: {
+                          "seriesName": seriesName,
+                          "seriesId": seriesId,
+                          "seasonCount": season.seasonNumber,
+                        });
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),

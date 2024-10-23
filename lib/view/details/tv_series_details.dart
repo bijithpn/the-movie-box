@@ -1,30 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
+import 'package:the_movie_box/utils/utils.dart';
 
 import '../widgets/widgets.dart';
 import 'widget/widget.dart';
 
-class SeriesDetailsView extends StatefulWidget {
+class SeriesDetailsView extends StatelessWidget {
   final int serieId;
   const SeriesDetailsView({
     super.key,
     required this.serieId,
   });
-
-  @override
-  State<SeriesDetailsView> createState() => _SeriesDetailsViewState();
-}
-
-class _SeriesDetailsViewState extends State<SeriesDetailsView> {
-  late DetailsBloc detailsBloc;
-  @override
-  void initState() {
-    detailsBloc = DetailsBloc()..add(GetSeriesDetails(widget.serieId));
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +29,7 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
             padding: const EdgeInsets.only(left: 15),
             child: IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(context),
                 icon: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
@@ -52,7 +42,10 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
           actions: [
             IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {},
+                onPressed: () {
+                  Utils.deeplinkCreater(
+                      route: 'seriesdetails', showId: serieId);
+                },
                 icon: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
@@ -60,20 +53,20 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                         color: Colors.black.withOpacity(.6),
                         shape: BoxShape.circle),
                     child: const Icon(Icons.share, size: 20))),
-            IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {},
-                icon: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(.6),
-                        shape: BoxShape.circle),
-                    child: const Icon(Icons.bookmark_add_outlined, size: 20))),
+            // IconButton(
+            //     padding: EdgeInsets.zero,
+            //     onPressed: () {},
+            //     icon: Container(
+            //         alignment: Alignment.center,
+            //         padding: const EdgeInsets.all(10),
+            //         decoration: BoxDecoration(
+            //             color: Colors.black.withOpacity(.6),
+            //             shape: BoxShape.circle),
+            //         child: const Icon(Icons.bookmark_add_outlined, size: 20))),
           ],
         ),
         body: BlocProvider(
-          create: (context) => detailsBloc,
+          create: (context) => DetailsBloc()..add(GetSeriesDetails(serieId)),
           child: BlocBuilder<DetailsBloc, DetailsState>(
             builder: (context, state) {
               if (state is DetailsLoading) {
@@ -272,7 +265,6 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                                     ),
                                   if (series.seasons.isNotEmpty)
                                     SeasonViewBuilder(
-                                      detailsBloc: detailsBloc,
                                       seasons: series.seasons,
                                       seriesId: series.id,
                                       seriesName: series.name,
@@ -292,9 +284,8 @@ class _SeriesDetailsViewState extends State<SeriesDetailsView> {
                               ),
                               SimilarShowsWidget(
                                 currentShowId: series.id,
-                                onTap: (id) => Navigator.of(context).pushNamed(
-                                    Routes.seriesDetail,
-                                    arguments: id),
+                                onTap: (id) =>
+                                    context.push(Routes.seriesDetail(id)),
                                 title: "Similar Series",
                                 similarShows: state.similarMovies,
                               )

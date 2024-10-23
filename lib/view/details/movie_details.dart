@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_movie_box/core/config/api_config.dart';
 import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
+import 'package:the_movie_box/utils/utils.dart';
 import 'package:the_movie_box/view/details/widget/widget.dart';
-
 import '../widgets/widgets.dart';
 
 class MovieDetailsView extends StatelessWidget {
@@ -40,7 +41,9 @@ class MovieDetailsView extends StatelessWidget {
           actions: [
             IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {},
+                onPressed: () async {
+                  Utils.deeplinkCreater(route: 'moviedetails', showId: movieId);
+                },
                 icon: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
@@ -48,16 +51,16 @@ class MovieDetailsView extends StatelessWidget {
                         color: Colors.black.withOpacity(.6),
                         shape: BoxShape.circle),
                     child: const Icon(Icons.share, size: 20))),
-            IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {},
-                icon: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(.6),
-                        shape: BoxShape.circle),
-                    child: const Icon(Icons.bookmark_add_outlined, size: 20))),
+            // IconButton(
+            //     padding: EdgeInsets.zero,
+            //     onPressed: () {},
+            //     icon: Container(
+            //         alignment: Alignment.center,
+            //         padding: const EdgeInsets.all(10),
+            //         decoration: BoxDecoration(
+            //             color: Colors.black.withOpacity(.6),
+            //             shape: BoxShape.circle),
+            //         child: const Icon(Icons.bookmark_add_outlined, size: 20))),
           ],
         ),
         body: BlocProvider(
@@ -260,9 +263,8 @@ class MovieDetailsView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 20),
                                   child: SimilarShowsWidget(
-                                    onTap: (id) => Navigator.of(context)
-                                        .pushNamed(Routes.movieDetails,
-                                            arguments: id),
+                                    onTap: (id) =>
+                                        context.push(Routes.movieDetails(id)),
                                     title: "Related Movies",
                                     similarShows: state.collection!.shows,
                                     currentShowId: movieId,
@@ -270,9 +272,8 @@ class MovieDetailsView extends StatelessWidget {
                                 ),
                               SimilarShowsWidget(
                                 currentShowId: movieId,
-                                onTap: (id) => Navigator.of(context).pushNamed(
-                                    Routes.movieDetails,
-                                    arguments: id),
+                                onTap: (id) =>
+                                    context.push(Routes.movieDetails(id)),
                                 similarShows: state.similarMovies,
                               )
                             ],
