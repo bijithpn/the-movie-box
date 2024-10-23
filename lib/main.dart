@@ -47,13 +47,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        title: 'Movie Box',
-        theme: ThemeData.dark(
-          useMaterial3: true,
-        ),
-        routeInformationParser: approuter.router.routeInformationParser,
-        routeInformationProvider: approuter.router.routeInformationProvider,
-        routerDelegate: approuter.router.routerDelegate,
-        backButtonDispatcher: RootBackButtonDispatcher());
+      title: 'Movie Box',
+      theme: ThemeData.dark(
+        useMaterial3: true,
+      ),
+      routeInformationParser: approuter.router.routeInformationParser,
+      routeInformationProvider: approuter.router.routeInformationProvider,
+      routerDelegate: approuter.router.routerDelegate,
+      backButtonDispatcher: RootBackButtonDispatcher(),
+    );
   }
 }

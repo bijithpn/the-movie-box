@@ -16,3 +16,8 @@ class GetSeriesDetails extends DetailsEvent {
   final int seriesId;
   const GetSeriesDetails(this.seriesId);
 }
+
+class GetAnimeDetails extends DetailsEvent {
+  final String animeId;
+  const GetAnimeDetails(this.animeId);
+}

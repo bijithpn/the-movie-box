@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:the_movie_box/core/routes/routes.dart';
 
 import 'package:the_movie_box/data/model/anime_model.dart';
 
@@ -6,7 +8,7 @@ import '../../widgets/widgets.dart';
 // import 'package:the_movie_box/view/details/tv_anime_details.dart';
 
 class AnimeCardWidget extends StatelessWidget {
-  final List<Animes> animeList;
+  final List<Anime> animeList;
   final ScrollController? scrollController;
   const AnimeCardWidget({
     super.key,
@@ -29,17 +31,12 @@ class AnimeCardWidget extends StatelessWidget {
         var anime = animeList[index];
         return InkWell(
           onTap: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => AnimeDetailsView(
-            //               serieId: anime.id,
-            //             )));
+            context.push(Routes.animeDetails(anime.id));
           },
           child: CachedImageWidget(
               key: ValueKey(anime.id),
               fit: BoxFit.cover,
-              imageUrl: anime.coverImage.large),
+              imageUrl: anime.poster.mainUrl),
         );
       },
     );

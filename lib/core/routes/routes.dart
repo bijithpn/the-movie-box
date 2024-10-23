@@ -47,6 +47,20 @@ class AppRouter {
               },
             ),
             GoRoute(
+              name: "animeDetails",
+              path: "/animeDetails/:id",
+              builder: (context, state) {
+                final animeId = state.pathParameters['id'] ?? '';
+                if (animeId.isNotEmpty) {
+                  return AnimeDetailsView(
+                    animeId: animeId,
+                  );
+                }
+                return const ErrorScreen(
+                    errorMessage: 'Invalid arguments for series details');
+              },
+            ),
+            GoRoute(
               name: "episodeDetails",
               path: Routes.episodeDetails,
               builder: (context, state) {
@@ -120,7 +134,12 @@ class Routes {
     return "/seriesDetails/$seriesId";
   }
 
+  static String animeDetails(String animeId) {
+    return "/animeDetails/$animeId";
+  }
+
   static const String episodeDetails = '/episodeDetails';
   static const String home = '/';
+
   static const String search = '/search';
 }

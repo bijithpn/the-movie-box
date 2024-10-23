@@ -13,7 +13,8 @@ class Utils {
     return utf8.decode(decodedBytes);
   }
 
-  static void deeplinkCreater({required int showId, required String route}) {
+  static void deeplinkCreater(
+      {required dynamic showId, required String route}) {
     final routeEncode = base64Encode(route);
     final showIdEncode = base64Encode(showId.toString());
     Share.share(

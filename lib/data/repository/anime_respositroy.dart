@@ -1,22 +1,27 @@
+import 'dart:convert';
+
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:the_movie_box/core/client/graphql_client.dart';
-import 'package:the_movie_box/data/model/anime_model.dart';
+
+import '../model/model.dart';
 
 class AnimeRespositroy {
   final graphql = GraphqlAPIClient();
-  Future<List<Animes>> fetchAnime({
+  Future<List<Anime>> fetchAnime({
     int page = 1,
+    int limit = 30,
   }) async {
-    List<Animes> animeList = [];
+    List<Anime> animeList = [];
     try {
       var query = """
       {
-        Page {
-          media {
-            id
-            coverImage {
-              large
-            }
+        animes(limit: $limit, page:$page) {
+          id
+          malId
+          english
+          poster {
+            originalUrl
+            mainUrl
           }
         }
       }
@@ -26,23 +31,132 @@ class AnimeRespositroy {
           document: gql(query),
         ),
       );
-      res.data?['Page']['media']
-          .map((e) => animeList.add(Animes.fromJson(e)))
-          .toList();
-    } catch (e) {
+      print(res.data);
+      res.data?['animes'].map((e) => animeList.add(Anime.fromJson(e))).toList();
+    } catch (e, stackTrace) {
+      print(e.toString());
+      print(stackTrace.toString());
       rethrow;
     }
     return animeList;
   }
 
-  // Future<MovieDetails> fetchAnimeDetails(int movieID) async {
-  //   try {
-  //     var body = {"language": "en-US"};
-  //     final res = await apiClient.get("${APIEndPoint.movieDetails}/$movieID",
-  //         queryParameters: body);
-  //     return MovieDetails.fromJson(res.data);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+  Future<AnimeDetails> fetchAnimeDetails(String animeId) async {
+    try {
+      var query = """
+      {
+        animes(ids:"$animeId" ,limit: 1,){
+    id
+    malId
+    english
+    japanese
+    synonyms
+    kind
+    rating
+    score
+    status
+    episodes
+    episodesAired
+    duration
+    releasedOn {
+      year
+    }
+    url
+    poster {
+      originalUrl
+      mainUrl
+    }
+    genres {
+      id
+      name
+    }
+    studios {
+      id
+      name
+    }
+
+    externalLinks {
+      id
+      kind
+      url
+      createdAt
+      updatedAt
+    }
+
+    personRoles {
+      id
+      rolesEn
+      person {
+        id
+        name
+        poster {
+          mainUrl
+          originalUrl
+        }
+      }
+    }
+    characterRoles {
+      id
+      rolesEn
+      character {
+        id
+        name
+        poster {
+          mainUrl
+          originalUrl
+        }
+      }
+    }
+
+    related {
+      id
+      anime {
+        id
+        name
+        poster {
+          mainUrl
+          originalUrl
+          
+        }
+      }
+    }
+
+    videos {
+      id
+      url
+      name
+      kind
+      playerUrl
+      imageUrl
+    }
+    screenshots {
+      id
+      originalUrl
+      x166Url
+      x332Url
+    }
+
+    scoresStats {
+      score
+      count
+    }
+    statusesStats {
+      status
+      count
+    }
+    description
+  }
+}
+      """;
+      final res = await graphql.client.query(
+        QueryOptions(
+          document: gql(query),
+        ),
+      );
+      print(json.encode(res.data?['animes']));
+      return AnimeDetails.fromJson(res.data?['animes'][0]);
+    } catch (e, stackTrace) {
+      rethrow;
+    }
+  }
 }

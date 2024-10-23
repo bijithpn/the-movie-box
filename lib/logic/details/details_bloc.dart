@@ -1,16 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:the_movie_box/data/model/cast_and_crew_model.dart';
-import 'package:the_movie_box/data/model/collection_model.dart';
-import 'package:the_movie_box/data/model/external_id_model.dart';
-import 'package:the_movie_box/data/model/movie_model.dart';
-import 'package:the_movie_box/data/model/platform_model.dart';
-import 'package:the_movie_box/data/model/review_model.dart';
-import 'package:the_movie_box/data/model/video_model.dart';
+import 'package:the_movie_box/data/repository/anime_respositroy.dart';
 import 'package:the_movie_box/data/repository/series_repository.dart';
 
-import '../../data/model/movie_details.dart';
+import '../../data/model/model.dart';
 import '../../data/model/series_details.dart';
 import '../../data/repository/movie_repository.dart';
 
@@ -21,6 +15,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   DetailsBloc() : super(DetailsInitial()) {
     MovieRepository movieRepository = MovieRepository();
     SeriesRepository seriesRepository = SeriesRepository();
+    AnimeRespositroy animeRespositroy = AnimeRespositroy();
     on<GetMovieDetails>((event, emit) async {
       try {
         emit(DetailsLoading());
@@ -76,6 +71,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           externalIds: result[6] as ExternalIds,
           videos: result[5] as List<Videos>,
         ));
+      } catch (error, stacktrace) {
+        debugPrint(stacktrace.toString());
+        emit(DetailsError(error: error.toString()));
+      }
+    });
+    on<GetAnimeDetails>((event, emit) async {
+      try {
+        emit(DetailsLoading());
+        var result = await animeRespositroy.fetchAnimeDetails(event.animeId);
+
+        emit(AnimeDetailsLoaded(anime: result));
       } catch (error, stacktrace) {
         debugPrint(stacktrace.toString());
         emit(DetailsError(error: error.toString()));

@@ -30,7 +30,7 @@ class HomeTVSeriesLoaded extends HomeState {
 }
 
 class HomeAnimeLoaded extends HomeState {
-  final List<Animes> animeList;
+  final List<Anime> animeList;
 
   const HomeAnimeLoaded({required this.animeList});
 

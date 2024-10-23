@@ -1,8 +1,10 @@
+export 'details/anime_details.dart';
 export 'details/episodes_details.dart';
 export 'details/movie_details.dart';
 export 'details/tv_series_details.dart';
 export 'details/widget/cast_widget.dart';
 export 'details/widget/crew_widget.dart';
+export 'details/widget/external_link_widget.dart';
 export 'details/widget/main_image_view.dart';
 export 'details/widget/rating_widget.dart';
 export 'details/widget/review_widget.dart';

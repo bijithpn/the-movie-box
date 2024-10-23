@@ -54,6 +54,13 @@ final class SeriesDetailsLoaded extends DetailsState {
   });
 }
 
+final class AnimeDetailsLoaded extends DetailsState {
+  final AnimeDetails anime;
+  const AnimeDetailsLoaded({
+    required this.anime,
+  });
+}
+
 final class DetailsError extends DetailsState {
   final String error;
   const DetailsError({required this.error});

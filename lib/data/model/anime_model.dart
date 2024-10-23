@@ -1,35 +1,47 @@
-class Animes {
-  int id;
-  CoverImage coverImage;
+class Anime {
+  String id;
+  String malId;
+  String english;
+  AnimePoster poster;
 
-  Animes({
+  Anime({
     required this.id,
-    required this.coverImage,
+    required this.malId,
+    required this.english,
+    required this.poster,
   });
 
-  factory Animes.fromJson(Map<String, dynamic> json) => Animes(
-        id: json["id"],
-        coverImage: CoverImage.fromJson(json["coverImage"]),
+  factory Anime.fromJson(Map<String, dynamic> json) => Anime(
+        id: json["id"] ?? "",
+        malId: json["malId"] ?? "",
+        english: json["english"] ?? "",
+        poster: AnimePoster.fromJson(json["poster"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "coverImage": coverImage.toJson(),
+        "malId": malId,
+        "english": english,
+        "poster": poster.toJson(),
       };
 }
 
-class CoverImage {
-  String large;
+class AnimePoster {
+  String originalUrl;
+  String mainUrl;
 
-  CoverImage({
-    required this.large,
+  AnimePoster({
+    required this.originalUrl,
+    required this.mainUrl,
   });
 
-  factory CoverImage.fromJson(Map<String, dynamic> json) => CoverImage(
-        large: json["large"],
+  factory AnimePoster.fromJson(Map<String, dynamic> json) => AnimePoster(
+        originalUrl: json["originalUrl"] ?? "",
+        mainUrl: json["mainUrl"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "large": large,
+        "originalUrl": originalUrl,
+        "mainUrl": mainUrl,
       };
 }
