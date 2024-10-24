@@ -2,11 +2,16 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:the_movie_box/logic/details/details_bloc.dart';
+import 'package:the_movie_box/logic/home/home_bloc.dart';
+import 'package:the_movie_box/logic/search/search_bloc.dart';
+import 'data/repository/repository.dart';
 import 'firebase_options.dart';
 import 'core/client/api_client.dart';
 import 'package:firebase_performance/firebase_performance.dart';
@@ -46,15 +51,36 @@ class MyApp extends StatelessWidget {
   final approuter = AppRouter();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Movie Box',
-      theme: ThemeData.dark(
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DetailsBloc(
+            movieRepository: MovieRepository(),
+            seriesRepository: SeriesRepository(),
+            animeRepository: AnimeRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => HomeBloc(
+            movieRepository: MovieRepository(),
+            seriesRepository: SeriesRepository(),
+            animeRepository: AnimeRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SearchBloc(),
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'Movie Box',
+        theme: ThemeData.dark(
+          useMaterial3: true,
+        ),
+        routeInformationParser: approuter.router.routeInformationParser,
+        routeInformationProvider: approuter.router.routeInformationProvider,
+        routerDelegate: approuter.router.routerDelegate,
+        backButtonDispatcher: RootBackButtonDispatcher(),
       ),
-      routeInformationParser: approuter.router.routeInformationParser,
-      routeInformationProvider: approuter.router.routeInformationProvider,
-      routerDelegate: approuter.router.routerDelegate,
-      backButtonDispatcher: RootBackButtonDispatcher(),
     );
   }
 }

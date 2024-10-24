@@ -274,10 +274,10 @@ class Season {
             json["air_date"] == null ? null : DateTime.parse(json["air_date"]),
         episodeCount: json["episode_count"],
         id: json["id"],
-        name: json["name"] ?? 0,
-        overview: json["overview"] ?? 0,
-        posterPath: json["poster_path"] ?? 0,
-        seasonNumber: json["season_number"],
+        name: json["name"] ?? "",
+        overview: json["overview"] ?? "",
+        posterPath: json["poster_path"] ?? "",
+        seasonNumber: json["season_number"] ?? 1,
         voteAverage: json["vote_average"].toDouble(),
       );
 

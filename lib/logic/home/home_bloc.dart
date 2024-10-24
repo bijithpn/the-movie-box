@@ -10,27 +10,42 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeInitial()) {
-    final MovieRepository movieRepository = MovieRepository();
-    final SeriesRepository seriesRepository = SeriesRepository();
-    final AnimeRespositroy animeRespositroy = AnimeRespositroy();
+  final MovieRepository movieRepository;
+  final SeriesRepository seriesRepository;
+  final AnimeRepository animeRepository;
 
+  List<Show> _currentMovies = [];
+  List<Show> _currentTVSeries = [];
+  List<Anime> _currentAnimes = [];
+
+  HomeBloc({
+    required this.movieRepository,
+    required this.seriesRepository,
+    required this.animeRepository,
+  }) : super(HomeInitial()) {
     on<GetMovies>((event, emit) async {
+      if (_currentMovies.isNotEmpty) {
+        emit(HomeMoviesLoaded(movieList: _currentMovies));
+        return;
+      }
       try {
         emit(HomeLoading());
         final mList = await movieRepository.fetchMovieResults();
+        _currentMovies = mList;
         emit(HomeMoviesLoaded(movieList: mList));
       } catch (error) {
         emit(HomeError(message: error.toString()));
       }
     });
+
     on<GetMoreMovies>((event, emit) async {
       if (state is HomeMoviesLoaded) {
         try {
           final currentMovies = (state as HomeMoviesLoaded).movieList;
           final newMovies =
               await movieRepository.fetchMovieResults(page: event.pageCount);
-          emit(HomeMoviesLoaded(movieList: currentMovies + newMovies));
+          _currentMovies = currentMovies + newMovies;
+          emit(HomeMoviesLoaded(movieList: _currentMovies));
         } catch (e) {
           emit(const HomeError(message: "Error loading more movies"));
         }
@@ -38,8 +53,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     on<GetTVSeries>((event, emit) async {
+      if (_currentTVSeries.isNotEmpty) {
+        emit(HomeTVSeriesLoaded(tvSeriesList: _currentTVSeries));
+        return;
+      }
       try {
+        emit(HomeLoading());
         final tvSeries = await seriesRepository.fetchTVSeriesResults();
+        _currentTVSeries = tvSeries;
         emit(HomeTVSeriesLoaded(tvSeriesList: tvSeries));
       } catch (e) {
         emit(const HomeError(message: "Error loading TV series"));
@@ -52,7 +73,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final currentTVSeries = (state as HomeTVSeriesLoaded).tvSeriesList;
           final newTVSeries = await seriesRepository.fetchTVSeriesResults(
               page: event.pageCount);
-          emit(HomeTVSeriesLoaded(tvSeriesList: currentTVSeries + newTVSeries));
+          _currentTVSeries = currentTVSeries + newTVSeries;
+          emit(HomeTVSeriesLoaded(tvSeriesList: _currentTVSeries));
         } catch (e) {
           emit(const HomeError(message: "Error loading more TV series"));
         }
@@ -60,25 +82,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     on<GetAnimes>((event, emit) async {
+      if (_currentAnimes.isNotEmpty) {
+        emit(HomeAnimeLoaded(animeList: _currentAnimes));
+        return;
+      }
       try {
-        final anime = await animeRespositroy.fetchAnime();
+        emit(HomeLoading());
+        final anime = await animeRepository.fetchAnime();
+        _currentAnimes = anime;
         emit(HomeAnimeLoaded(animeList: anime));
       } catch (e) {
         emit(const HomeError(message: "Error loading anime"));
       }
     });
 
-    // on<GetMoreAnimes>((event, emit) async {
-    //   if (state is HomeAnimeLoaded) {
-    //     try {
-    //       final currentAnime = (state as HomeAnimeLoaded).animeList;
-    //       final newAnime =
-    //           await animeRespositroy.fetchAnime(page: event.pageCount);
-    //       emit(HomeAnimeLoaded(animeList: currentAnime + newAnime));
-    //     } catch (e) {
-    //       emit(const HomeError(message: "Error loading more anime"));
-    //     }
-    //   }
-    // });
+    on<GetMoreAnimes>((event, emit) async {
+      if (state is HomeAnimeLoaded) {
+        try {
+          final currentAnime = (state as HomeAnimeLoaded).animeList;
+          final newAnime =
+              await animeRepository.fetchAnime(page: event.pageCount);
+          _currentAnimes = currentAnime + newAnime;
+          emit(HomeAnimeLoaded(animeList: _currentAnimes));
+        } catch (e) {
+          emit(const HomeError(message: "Error loading more anime"));
+        }
+      }
+    });
   }
 }

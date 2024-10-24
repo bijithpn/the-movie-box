@@ -62,7 +62,7 @@ class MovieRepository {
     }
   }
 
-  Future<List<Show>> fetchSimilarMovie(int movieID) async {
+  Future<List<Show>> fetchSimilarMovies(int movieID) async {
     try {
       List<Show> showList = [];
       var body = {"language": "en-US", "page": 1};

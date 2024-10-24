@@ -1,10 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import '../config/api_config.dart';
 
 class ApiClient {
@@ -23,15 +20,10 @@ class ApiClient {
     initialize();
     _initializeNetworkListener();
   }
-  Future<String> _getCacheDirectory() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
 
   void initialize() async {
     _baseUrl = APIConfig.baseURL;
     _apiKey = dotenv.env['TMDB_API_Read_Access_Token'] ?? '';
-
     _dio = Dio(BaseOptions(
       baseUrl: _baseUrl,
       headers: {
@@ -40,16 +32,6 @@ class ApiClient {
         'Authorization': 'Bearer $_apiKey',
       },
     ));
-    final cacheDir = await _getCacheDirectory();
-    final cacheOptions = CacheOptions(
-      store: HiveCacheStore('$cacheDir/dio_cache'),
-      policy: CachePolicy.request,
-      hitCacheOnErrorExcept: [401, 403],
-      priority: CachePriority.normal,
-      maxStale: const Duration(days: 7),
-    );
-
-    _dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
     _dio.interceptors.add(
       RetryInterceptor(
         dio: _dio,

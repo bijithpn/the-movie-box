@@ -3,7 +3,7 @@ import 'package:the_movie_box/core/client/graphql_client.dart';
 
 import '../model/model.dart';
 
-class AnimeRespositroy {
+class AnimeRepository {
   final graphql = GraphqlAPIClient();
   Future<List<Anime>> fetchAnime({
     int page = 1,
