@@ -160,7 +160,8 @@ class MovieDetailsView extends StatelessWidget {
                                           ),
                                         Row(
                                           children: [
-                                            Text(movie.releaseDate.year
+                                            Text((movie.releaseDate?.year ??
+                                                    DateTime.now().year)
                                                 .toString()),
                                             const SizedBox(width: 10),
                                             Text("${movie.runtime} min"),

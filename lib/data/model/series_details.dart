@@ -52,8 +52,8 @@ class SeriesDetails {
   });
 
   factory SeriesDetails.fromJson(Map<String, dynamic> json) => SeriesDetails(
-        adult: json["adult"],
-        backdropPath: json["backdrop_path"],
+        adult: json["adult"] ?? false,
+        backdropPath: json["backdrop_path"] ?? "",
         createdBy: List<CreatedBy>.from(
             json["created_by"].map((x) => CreatedBy.fromJson(x))),
         episodeRunTime: List<int>.from(json["episode_run_time"].map((x) => x)),
@@ -62,25 +62,25 @@ class SeriesDetails {
         id: json["id"],
         lastAirDate: DateTime.parse(json["last_air_date"]),
         lastEpisodeToAir: TEpisodeToAir.fromJson(json["last_episode_to_air"]),
-        name: json["name"],
+        name: json["name"] ?? "",
         nextEpisodeToAir: json["next_episode_to_air"] == null
             ? null
             : TEpisodeToAir.fromJson(json["next_episode_to_air"]),
         networks: List<Network>.from(
             json["networks"].map((x) => Network.fromJson(x))),
-        numberOfEpisodes: json["number_of_episodes"],
-        numberOfSeasons: json["number_of_seasons"],
-        originalName: json["original_name"],
-        overview: json["overview"],
+        numberOfEpisodes: json["number_of_episodes"] ?? 0,
+        numberOfSeasons: json["number_of_seasons"] ?? 0,
+        originalName: json["original_name"] ?? "",
+        overview: json["overview"] ?? "",
         popularity: json["popularity"]?.toDouble(),
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? "",
         productionCompanies: List<Network>.from(
             json["production_companies"].map((x) => Network.fromJson(x))),
         seasons:
             List<Season>.from(json["seasons"].map((x) => Season.fromJson(x))),
-        status: json["status"],
-        tagline: json["tagline"],
-        type: json["type"],
+        status: json["status"] ?? "",
+        tagline: json["tagline"] ?? "",
+        type: json["type"] ?? "",
         voteAverage: json["vote_average"].toDouble(),
       );
 
@@ -134,7 +134,7 @@ class CreatedBy {
 
   factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
         id: json["id"],
-        creditId: json["credit_id"],
+        creditId: json["credit_id"] ?? "",
         name: json["name"] ?? "",
         originalName: json["original_name"] ?? "",
         gender: json["gender"],
@@ -162,7 +162,7 @@ class Genre {
 
   factory Genre.fromJson(Map<String, dynamic> json) => Genre(
         id: json["id"],
-        name: json["name"],
+        name: json["name"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -198,11 +198,11 @@ class TEpisodeToAir {
 
   factory TEpisodeToAir.fromJson(Map<String, dynamic> json) => TEpisodeToAir(
         id: json["id"],
-        name: json["name"],
-        overview: json["overview"],
+        name: json["name"] ?? "",
+        overview: json["overview"] ?? "",
         voteAverage: json["vote_average"].toDouble(),
         airDate: DateTime.parse(json["air_date"]),
-        episodeNumber: json["episode_number"],
+        episodeNumber: json["episode_number"] ?? 0,
         runtime: json["runtime"],
         seasonNumber: json["season_number"],
         showId: json["show_id"],
@@ -274,9 +274,9 @@ class Season {
             json["air_date"] == null ? null : DateTime.parse(json["air_date"]),
         episodeCount: json["episode_count"],
         id: json["id"],
-        name: json["name"],
-        overview: json["overview"],
-        posterPath: json["poster_path"],
+        name: json["name"] ?? 0,
+        overview: json["overview"] ?? 0,
+        posterPath: json["poster_path"] ?? 0,
         seasonNumber: json["season_number"],
         voteAverage: json["vote_average"].toDouble(),
       );

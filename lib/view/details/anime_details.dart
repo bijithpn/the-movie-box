@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_movie_box/logic/details/details_bloc.dart';
 import 'package:the_movie_box/utils/utils.dart';
+import 'package:the_movie_box/view/details/widget/anime_video_widget.dart';
 
 import '../widgets/widgets.dart';
 import 'widget/widget.dart';
@@ -204,6 +205,14 @@ class AnimeDetailsView extends StatelessWidget {
                                     const Tab(
                                       text: "CHARACTERS + CREW",
                                     ),
+                                  if (anime.videos.isNotEmpty)
+                                    const Tab(
+                                      text: "VIDEOS",
+                                    ),
+                                  if (anime.screenshots.isNotEmpty)
+                                    const Tab(
+                                      text: "SCREENSHOTS",
+                                    )
                                 ],
                                 children: [
                                   if (anime.characterRoles.isNotEmpty &&
@@ -216,7 +225,13 @@ class AnimeDetailsView extends StatelessWidget {
                                         AnimeCrewWidget(
                                             crewList: anime.personRoles)
                                       ],
-                                    )
+                                    ),
+                                  if (anime.videos.isNotEmpty)
+                                    AnimeVideoWidget(animeVideos: anime.videos),
+                                  if (anime.screenshots.isNotEmpty)
+                                    AnimeImageSlider(
+                                      imgList: anime.screenshots,
+                                    ),
                                 ],
                               ),
                               AnimeExternallinkWidget(

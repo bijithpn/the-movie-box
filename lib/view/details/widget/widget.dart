@@ -1,7 +1,9 @@
 export 'anime_character_widget.dart';
 export 'anime_crew_widget.dart';
 export 'anime_externallink_widget.dart';
+export 'anime_image_slider.dart';
 export 'anime_related_widget.dart';
+export 'anime_video_widget.dart';
 export 'cast_widget.dart';
 export 'crew_widget.dart';
 export 'external_link_widget.dart';

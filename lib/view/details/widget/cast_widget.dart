@@ -75,7 +75,7 @@ class CastWidget extends StatelessWidget {
                           cast.character,
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.center,
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.clip,
                         ),
                       ],

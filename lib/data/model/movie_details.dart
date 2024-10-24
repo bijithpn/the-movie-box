@@ -16,7 +16,7 @@ class MovieDetails {
   double popularity;
   String posterPath;
   List<ProductionCompany> productionCompanies;
-  DateTime releaseDate;
+  DateTime? releaseDate;
   int runtime;
   String tagline;
   String title;
@@ -45,27 +45,29 @@ class MovieDetails {
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) => MovieDetails(
-        adult: json["adult"],
+        adult: json["adult"] ?? false,
         backdropPath: json["backdrop_path"] ?? "",
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         id: json["id"],
-        imdbId: json["imdb_id"],
+        imdbId: json["imdb_id"] ?? "",
         belongsToCollection: json["belongs_to_collection"] == null
             ? null
             : BelongsToCollection.fromJson(json["belongs_to_collection"]),
-        overview: json["overview"],
+        overview: json["overview"] ?? "",
         popularity: json["popularity"]?.toDouble(),
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? "",
         productionCompanies: List<ProductionCompany>.from(
             json["production_companies"]
                 .map((x) => ProductionCompany.fromJson(x))),
-        releaseDate: DateTime.parse(json["release_date"]),
-        runtime: json["runtime"],
-        tagline: json["tagline"],
-        title: json["title"],
+        releaseDate: json["release_date"] == null
+            ? DateTime.now()
+            : DateTime.tryParse(json["release_date"]),
+        runtime: json["runtime"] ?? 0,
+        tagline: json["tagline"] ?? "",
+        title: json["title"] ?? "",
         video: json["video"],
         voteAverage: json["vote_average"]?.toDouble(),
-        voteCount: json["vote_count"],
+        voteCount: json["vote_count"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,7 +83,7 @@ class MovieDetails {
         "production_companies":
             List<dynamic>.from(productionCompanies.map((x) => x.toJson())),
         "release_date":
-            "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
+            "${releaseDate?.year.toString().padLeft(4, '0')}-${releaseDate?.month.toString().padLeft(2, '0')}-${releaseDate?.day.toString().padLeft(2, '0')}",
         "runtime": runtime,
         "tagline": tagline,
         "title": title,
@@ -101,8 +103,8 @@ class Genre {
   });
 
   factory Genre.fromJson(Map<String, dynamic> json) => Genre(
-        id: json["id"],
-        name: json["name"],
+        id: json["id"] ?? "",
+        name: json["name"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

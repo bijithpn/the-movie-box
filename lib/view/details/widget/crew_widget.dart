@@ -76,7 +76,7 @@ class CrewWidget extends StatelessWidget {
                           crew.job,
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.center,
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.clip,
                         ),
                       ],

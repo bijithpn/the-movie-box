@@ -8,7 +8,12 @@ class ExternalLinkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return externalIds == null
+    return externalIds == null ||
+            externalIds!.wikidataId.isEmpty &&
+                externalIds!.twitterId.isEmpty &&
+                externalIds!.imdbId.isEmpty &&
+                externalIds!.instagramId.isEmpty &&
+                externalIds!.facebookId.isEmpty
         ? const SizedBox.shrink()
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,

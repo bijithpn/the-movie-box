@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:the_movie_box/core/client/graphql_client.dart';
 
@@ -31,11 +29,8 @@ class AnimeRespositroy {
           document: gql(query),
         ),
       );
-      print(res.data);
       res.data?['animes'].map((e) => animeList.add(Anime.fromJson(e))).toList();
-    } catch (e, stackTrace) {
-      print(e.toString());
-      print(stackTrace.toString());
+    } catch (e) {
       rethrow;
     }
     return animeList;
@@ -153,9 +148,8 @@ class AnimeRespositroy {
           document: gql(query),
         ),
       );
-      print(json.encode(res.data?['animes']));
       return AnimeDetails.fromJson(res.data?['animes'][0]);
-    } catch (e, stackTrace) {
+    } catch (e) {
       rethrow;
     }
   }
