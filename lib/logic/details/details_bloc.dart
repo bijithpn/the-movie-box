@@ -13,15 +13,10 @@ part 'details_event.dart';
 part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
-  final MovieRepository movieRepository;
-  final SeriesRepository seriesRepository;
-  final AnimeRepository animeRepository;
-
-  DetailsBloc({
-    required this.movieRepository,
-    required this.seriesRepository,
-    required this.animeRepository,
-  }) : super(DetailsInitial()) {
+  DetailsBloc() : super(DetailsInitial()) {
+    final MovieRepository movieRepository = MovieRepository();
+    final SeriesRepository seriesRepository = SeriesRepository();
+    final AnimeRepository animeRepository = AnimeRepository();
     final CacheManager cacheManager = CacheManager(
       Config('movieSeriesCache', stalePeriod: const Duration(days: 7)),
     );

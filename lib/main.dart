@@ -54,13 +54,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => DetailsBloc(
-            movieRepository: MovieRepository(),
-            seriesRepository: SeriesRepository(),
-            animeRepository: AnimeRepository(),
-          ),
-        ),
-        BlocProvider(
           create: (context) => HomeBloc(
             movieRepository: MovieRepository(),
             seriesRepository: SeriesRepository(),
