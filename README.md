@@ -23,7 +23,13 @@ A Flutter project to browse and view detailed information about Movies, TV Serie
 
   - Browse anime-specific details and explore genres, episodes, and trailers.
 
-- **State Management:** Efficient state handling using the [BLoC (Business Logic Component)](https://bloclibrary.dev/#/) pattern, providing smooth performance and an organized codebase.
+- **Efficient Navigation and Deep Linking:**
+
+  - Navigate seamlessly through the app with **GoRouter**, enhancing user experience with clear, structured routes.
+  - Support for **deep linking**, allowing users to access specific movies, series, or anime directly through shared links.
+
+- **State Management:**
+  - Smooth, organized state handling using the [BLoC (Business Logic Component)](https://bloclibrary.dev/#/) pattern.
 
 ## 🚀 Getting Started
 
@@ -59,32 +65,42 @@ A Flutter project to browse and view detailed information about Movies, TV Serie
 
 ## 📦 Dependencies
 
-- **State Management**: [flutter_bloc](https://pub.dev/packages/flutter_bloc) - for BLoC pattern.
-- **Networking**: [DIO](https://pub.dev/packages/dio) - REST API handling, [graphql_flutter](https://pub.dev/packages/graphql_flutter) - GraphQL API handling.
+- **State Management**: [flutter_bloc](https://pub.dev/packages/flutter_bloc) - for implementing the BLoC pattern.
+- **Networking**: [Dio](https://pub.dev/packages/dio) - for handling REST API calls, [graphql_flutter](https://pub.dev/packages/graphql_flutter) - for GraphQL API handling.
+- **Navigation**: [GoRouter](https://pub.dev/packages/go_router) - for app-wide navigation and deep linking.
 - **UI Components**: A mix of custom and standard Flutter widgets to enhance the browsing experience.
 
 ## 🗂️ Project Structure
 
 ```plaintext
 lib/
-├── logic/             # BLoC files for handling business logic
-├── data/              # Data models and API integrations
-│   ├── models/        # Models for Movies, Series, and Anime
-│   └── repositories/  # Repositories for API calls
-├── core/              # api client,app router, other app constant
-├── view/              # Main screens for browsing and details
-├── widgets/           # Reusable components
-└── main.dart          # Entry point of the application
+├── core/                 # App-wide constants, router configuration, API client
+├── data/                 # Models and repository classes for data handling
+│   ├── models/           # Models for Movies, Series, and Anime
+│   └── repositories/     # Repositories for API calls
+├── logic/                # BLoC files for handling business logic
+├── view/                 # Main screens for browsing and details
+├── widgets/              # Reusable UI components
+└── main.dart             # Entry point of the application
 ```
 
 ## 📡 APIs
 
 - **Movies and Series API:**
 
-  - [TMDB APIs](https://developer.themoviedb.org/docs/getting-started)
+  - [TMDB API](https://developer.themoviedb.org/docs/getting-started)
 
 - **Anime GraphQL API:**
-  - [shikimori APIs](https://shikimori.one/api/doc/1.0/animes/index)
+
+  - [Shikimori API](https://shikimori.one/api/doc/1.0/animes/index)
+
+## 📱 GoRouter and Deep Linking
+
+This app uses **GoRouter** for easy navigation and structured route handling. Deep linking support allows users to directly access specific details pages from external links, making it easy to share specific movies, TV series, or anime directly.
+
+### Deep Linking
+
+To support deep links for specific shows, configure your app to handle URL schemes or app links. This will allow users to share and directly navigate to content such as a movie's details or an anime's episode list.
 
 ## 🖼️ Screenshots
 
