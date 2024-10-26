@@ -8,7 +8,6 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:the_movie_box/core/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:the_movie_box/logic/details/details_bloc.dart';
 import 'package:the_movie_box/logic/home/home_bloc.dart';
 import 'package:the_movie_box/logic/search/search_bloc.dart';
 import 'data/repository/repository.dart';
